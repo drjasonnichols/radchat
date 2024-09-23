@@ -1,8 +1,8 @@
-Flask==2.2.5           # Downgraded to maintain compatibility with flask-jwt-extended
+Flask==2.3.2           # Downgraded to maintain compatibility with flask-jwt-extended
 Flask-SQLAlchemy==3.0.5
 PyMySQL==1.0.2
 Werkzeug==2.3.3
 PyJWT==2.6.0
 Flask-SocketIO==5.3.2
-flask-jwt-extended==4.4.0
+flask-jwt-extended==4.4.4
 flask-cors
