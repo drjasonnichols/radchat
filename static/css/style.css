@@ -1,0 +1,96 @@
+body {
+    /* Full-page dark background with neon cyan text and retro font */
+    background-color: #1a1a1a;
+    color: #00ffcc;
+    font-family: 'Press Start 2P', cursive; /* Pixelated retro font */
+    height: 100vh; /* Full viewport height */
+    display: flex; /* Flexbox to center content */
+    justify-content: center; /* Horizontally center content */
+    align-items: center; /* Vertically center content */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    /* Neon-styled bordered container for content */
+    border: 3px solid #00ffcc; /* Neon cyan border */
+    box-shadow: 0 0 20px #00ffcc; /* Neon glow effect */
+    background-color: #333; /* Dark background inside the container */
+    max-width: 380px; /* Max width for large mobile screens */
+    width: 100%; /* Full width for small screens */
+    padding: 15px; /* Padding inside the container */
+    border-radius: 10px; /* Rounded corners for a modern look */
+}
+
+h4 {
+    /* Heading with neon pink text and glow effect */
+    font-size: 18px; /* Adjust font size for smaller screens */
+    color: #ff00ff; /* Neon pink color */
+    text-shadow: 2px 2px 8px #ff00ff; /* Neon glow effect */
+    text-align: center; /* Center-align text */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.form-control {
+    /* Input fields with dark background and neon borders */
+    background-color: #222; /* Slightly lighter dark background */
+    color: #00ffcc; /* Neon cyan text */
+    border: 2px solid #00ffcc; /* Neon cyan border */
+    font-family: inherit; /* Inherit the pixelated font */
+    font-size: 12px; /* Smaller font size for inputs */
+}
+
+button {
+    /* Basic button styling with smooth transition */
+    font-family: inherit; /* Inherit the retro font */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    padding: 10px; /* Padding inside the button */
+}
+
+.btn-primary {
+    /* Neon pink button */
+    background-color: #ff00ff; /* Neon pink background */
+    border-color: #ff00ff; /* Neon pink border */
+}
+
+.btn-primary:hover {
+    /* Neon cyan hover effect for primary button */
+    background-color: #00ffcc; /* Neon cyan background on hover */
+    border-color: #00ffcc; /* Neon cyan border on hover */
+}
+
+.click-me-btn {
+    /* Special button with neon cyan background */
+    background-color: #00ffcc; /* Neon cyan background */
+    color: #1a1a1a; /* Dark text for contrast */
+    border: 2px solid #00ffcc; /* Neon cyan border */
+    font-size: 16px; /* Larger font size for emphasis */
+}
+
+.click-me-btn:hover {
+    /* Neon pink hover effect for the "Click Me" button */
+    background-color: #ff00ff; /* Neon pink background on hover */
+    color: #1a1a1a; /* Dark text for contrast */
+    border-color: #ff00ff; /* Neon pink border on hover */
+}
+
+.card-footer small a {
+    /* Links inside the footer with neon pink text */
+    color: #ff00ff; /* Neon pink color */
+    text-decoration: none; /* No underline by default */
+}
+
+.card-footer small a:hover {
+    /* Underline links on hover */
+    text-decoration: underline; /* Underline effect on hover */
+}
+
+.modal-content {
+    /* Modal background with consistent dark theme */
+    background-color: #333; /* Same dark background as the container */
+}
+
+.modal-title {
+    /* Neon pink title for modals */
+    color: #ff00ff; /* Neon pink color for modal title */
+}

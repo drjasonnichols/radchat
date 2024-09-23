@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RadChat - Chat Window</title>
+
+    <!-- External Fonts (Press Start 2P) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 for layout and styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons (e.g., power-off, send button) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS for RadChat styling -->
+    <link href="static/css/chat.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Full-screen container to center content both vertically and horizontally -->
+    <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
+        <div class="row w-100 h-100">
+            
+            <!-- Chatters Area (Sidebar) - Hidden on small screens, visible on larger screens -->
+            <div class="col-4 d-none d-sm-block">
+                <div class="d-flex flex-column h-100">
+                    <!-- Chatters window (RadChatters section) -->
+                    <div id="chattersWindow" class="chatters">
+                        <h5 class="text-center">Rad<br>Chatters</h5> <!-- Heading with centered text for chatters -->
+                    </div>
+                    
+                    <!-- Lurkers section (shows users lurking in the chat) -->
+                    <div id="lurkersWindow" class="lurkers">
+                        <h5 class="text-center">Lame-O<br>Lurkers</h5>
+                        <h5 id="lurkerCount" class="text-center">0</h5> <!-- Counter for lurkers -->
+                    </div>
+                    
+                    <!-- RoboChatters section (for displaying AI chatters) -->
+                    <div id="roboWindow" class="robo-chatters">
+                        <h5 class="text-center">Robo<br>Chatters</h5>
+                    </div>
+                    
+                    <!-- Log-off button at the bottom of the sidebar -->
+                    <div class="mt-auto text-center">
+                        <button class="btn btn-danger chatters-btn" id="logOffButtonMain">
+                            <i class="fas fa-power-off"></i> <!-- Font Awesome power-off icon for log-off -->
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chat Area - Takes up full width on small screens, 8 columns on larger screens -->
+            <div class="col-12 col-sm-8 d-flex flex-column h-100">
+                <div class="chat-window flex-grow-1 overflow-auto" id="chatWindow">
+                    <!-- Chat messages will appear here, auto-scroll enabled -->
+                    <!-- Sample messages (commented out)
+                    <div class="chat-message">Chatter1: Hey, what's up?</div>
+                    <div class="chat-message">Chatter2: Not much, just chilling!</div>
+                    <div class="chat-message robo-message">Robo1: Greetings, human.</div>
+                    -->
+                </div>
+
+                <!-- Button to show chatters on small screens (offcanvas trigger) -->
+                <div class="d-flex my-2">
+                    <button class="btn btn-outline-primary d-sm-none flex-fill" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChatters" aria-controls="offcanvasChatters">
+                        <i class="fas fa-users"></i> <!-- Font Awesome users icon for viewing chatters -->
+                        View RadChatters
+                    </button>
+                </div>
+
+                <!-- Message input row (textarea and send button) -->
+                <div class="d-flex">
+                    <textarea class="form-control message-input flex-grow-1" id="messageInput" placeholder="Type your message..." rows="3"></textarea>
+                    <button class="btn send-btn flex-shrink-0" id="sendMessage">
+                        <i class="fas fa-circle-arrow-up"></i> <!-- Font Awesome send icon -->
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offcanvas for chatters (visible on small screens only) -->
+    <div class="offcanvas offcanvas-start d-sm-none" tabindex="-1" id="offcanvasChatters" aria-labelledby="offcanvasChattersLabel">
+        <div class="offcanvas-header">
+            <!-- Close button for the offcanvas -->
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <!-- Chatters list inside the offcanvas (small screens) -->
+            <div class="chatters" id="offCanvasChatters">
+                <h5 class="text-center">Rad<br>Chatters</h5>
+            </div>
+
+            <!-- Lurkers section inside the offcanvas -->
+            <div id="offcanvas-lurkersWindow" class="lurkers">
+                <h5 class="text-center">Lame-O<br>Lurkers</h5>
+                <h5 id="offcanvas-lurkerCount" class="text-center">0</h5> <!-- Counter for lurkers -->
+            </div>
+
+            <!-- RoboChatters section inside the offcanvas -->
+            <div id="offcanvas-roboWindow" class="robo-chatters">
+                <h5 class="text-center">Robo<br>Chatters</h5>
+            </div>
+
+            <!-- Log-off button at the bottom of the offcanvas -->
+            <div class="mt-auto text-center">
+                <button class="btn btn-danger chatters-btn" id="logOffButtonOffCanvas">
+                    <i class="fas fa-power-off"></i> <!-- Font Awesome power-off icon for log-off -->
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript for interactivity and offcanvas functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Socket.IO for real-time communication -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+    <!-- Custom JavaScript for handling chat functionality -->
+    <script src="static/js/chatsocket.js"></script> <!-- Manages WebSocket chat connections -->
+    <script src="static/js/datamodel.js"></script> <!-- Manages data fetching and updates -->
+    <script src="static/js/chatwindow.js"></script> <!-- Handles user interactions in the chat window -->
+</body>
+</html>

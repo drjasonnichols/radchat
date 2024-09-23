@@ -1,0 +1,243 @@
+/* General Page Styling */
+body {
+    /* Full page dark background with neon text and retro-style font */
+    background-color: #1a1a1a;
+    color: #00ffcc;
+    font-family: 'Press Start 2P', cursive;
+    /* Center content vertically and horizontally */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Remove margin and padding for full screen effect */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.chat-window {
+    /* Neon border and glow for the chat window */
+    border: 3px solid #00ffcc;
+    box-shadow: 0 0 20px #00ffcc;
+    background-color: #333; /* Dark background inside the chat window */
+    flex-grow: 1;
+    border-radius: 10px; /* Rounded corners */
+    overflow-y: auto; /* Allow vertical scrolling for chat messages */
+    padding: 10px; /* Space inside the chat window */
+}
+
+.chat-message {
+    /* Individual chat message styling */
+    padding: 5px;
+    border-bottom: 1px solid #00ffcc;
+    margin-bottom: 5px;
+}
+
+/* RoboChatter Message */
+.robo-message {
+    /* Distinct neon blue color for messages from the RoboChatter */
+    color: #00FFFF;
+}
+
+/* Chatters Area */
+.chatters, .robo-chatters, .lurkers {
+    /* Areas for displaying chatters, robo chatters, and lurkers */
+    max-height: 35vh; /* Limit max height with scrolling */
+    overflow-y: auto; /* Vertical scrolling */
+    background-color: #222; /* Dark background for contrast */
+    border: 3px solid #ff00ff; /* Neon pink border */
+    box-shadow: 0 0 10px #ff00ff; /* Neon pink glow effect */
+    padding: 10px; /* Space inside the containers */
+    margin-bottom: 10px;
+    border-radius: 10px; /* Rounded corners */
+}
+
+.robo-chatters {
+    /* Neon blue border and glow effect for robo chatters */
+    border-color: #00FFFF;
+    box-shadow: 0 0 10px #00FFFF;
+}
+
+.lurkers {
+    /* Neon yellow border and glow for lurkers */
+    border-color: #FFFF33;
+    box-shadow: 0 0 10px #FFFF33;
+}
+
+.chatter {
+    /* Neon pink text color for regular chatters */
+    color: #ff00ff;
+    margin-bottom: 10px;
+}
+
+.robo-chatter {
+    /* Neon blue text color for RoboChatters */
+    color: #00FFFF;
+    margin-bottom: 10px;
+}
+
+/* Message Input Area */
+.message-input {
+    /* Styled input box with neon glow and constraints */
+    background-color: #333; /* Dark background */
+    border: 3px solid #00ffcc; /* Neon cyan border */
+    color: #00ffcc; /* Neon cyan text */
+    border-radius: 10px 0 0 10px; /* Rounded corners for the left side */
+    box-shadow: 0 0 20px #00ffcc; /* Neon glow effect */
+    padding-left: 10px; /* Padding inside the input */
+    height: auto;
+    min-height: 60px; /* Minimum height */
+    max-height: 120px; /* Maximum height */
+    overflow-y: auto; /* Vertical scrolling */
+    white-space: normal; /* Wrap long text */
+    word-wrap: break-word; /* Proper word wrapping */
+    resize: none; /* Prevent resizing */
+    flex-grow: 1; /* Fill available width */
+}
+
+/* Input Focus State */
+.message-input:focus {
+    /* Keep neon style on focus */
+    background-color: #333;
+    color: #00ffcc;
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 20px #00ffcc;
+    border: 3px solid #00ffcc;
+}
+
+/* Send Button */
+.send-btn {
+    /* Style for the send button with neon glow */
+    background-color: #ff00ff; /* Neon pink background */
+    border: 3px solid #ff00ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 18px; /* Button icon size */
+    border-radius: 0 10px 10px 0; /* Rounded corners for the right side */
+    box-shadow: 0 0 20px #ff00ff; /* Neon pink glow */
+}
+
+.send-btn i {
+    /* Icon inside send button */
+    font-size: 30px;
+    color: #000000; /* Black icon */
+}
+
+.send-btn:hover {
+    /* Neon cyan hover effect for send button */
+    background-color: #00ffcc;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+/* Chatters Button (Between Chat and Input) */
+.chatters-btn {
+    /* Button for toggling the chatters area */
+    background-color: #000000; /* Black background */
+    border: 3px solid #ff00ff; /* Neon pink border */
+    box-shadow: 0 0 20px #ff00ff; /* Neon pink glow effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 18px; /* Icon size */
+    border-radius: 10px; /* Rounded corners */
+    flex-grow: 1; /* Stretch to fill width */
+}
+
+.chatters-btn i {
+    /* Icon inside chatters button */
+    font-size: 30px;
+    color: #ff00ff; /* Neon pink */
+}
+
+.chatters-btn:hover {
+    /* Neon cyan hover effect for chatters button */
+    background-color: #00ffcc;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+/* Offcanvas Styling */
+.offcanvas {
+    /* Styling for the hidden offcanvas menu */
+    background-color: #333; /* Dark background */
+    color: #00ffcc; /* Neon cyan text */
+    padding: 20px; /* Space inside the offcanvas */
+}
+
+/* Close Button */
+.btn-close {
+    /* Close button with neon green effect */
+    filter: invert(75%) sepia(50%) saturate(5000%) hue-rotate(90deg) brightness(120%) contrast(120%);
+    padding-bottom: 40px;
+    display: block;
+    margin-left: auto; /* Align to the right */
+}
+
+/* Offcanvas Body */
+.offcanvas-body {
+    /* Body styling for the offcanvas */
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+}
+
+/* Chatters and RoboChatters inside Offcanvas */
+.offcanvas .chatters, .offcanvas .robo-chatters {
+    /* Offcanvas specific styling for chatters */
+    background-color: #222;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.offcanvas .chatter, .offcanvas .robo-chatter {
+    /* Neon colors for chatters inside the offcanvas */
+    color: #ff00ff; /* Neon pink for chatters */
+}
+
+.offcanvas .robo-chatter {
+    color: #00ffff; /* Neon blue for RoboChatters */
+}
+
+/* Build a Robo Link */
+.offcanvas .build-robo-link {
+    /* Link for "Build a Robo" with neon styling */
+    display: block;
+    text-align: center;
+    color: #00ffff; /* Neon blue */
+    margin-top: 10px;
+    text-decoration: none; /* No underline by default */
+}
+
+.offcanvas .build-robo-link:hover {
+    /* Add underline on hover */
+    text-decoration: underline;
+}
+
+/* Show Chatters Button (Visible on Small Screens) */
+.btn-outline-primary.d-sm-none {
+    /* Button for small screens to toggle chatters */
+    color: #ff00ff; /* Neon pink */
+    border: 3px solid #ff00ff; /* Neon pink border */
+    box-shadow: 0 0 20px #ff00ff; /* Neon pink glow */
+    background-color: transparent;
+    border-radius: 10px;
+    padding: 0;
+    flex-grow: 1;
+    margin-right: 0px;
+}
+
+.btn-outline-primary.d-sm-none:hover {
+    /* Neon cyan hover effect for small screen button */
+    background-color: #333;
+    color: #00ffcc;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+.btn-outline-primary.d-sm-none i {
+    /* Icon for small screen button */
+    font-size: 18px;
+    color: #ff00ff; /* Neon pink */
+}

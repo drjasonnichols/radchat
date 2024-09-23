@@ -1,0 +1,15 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environment folder
+.venv/
+
+# Ignore Flask instance folder
+instance/
+
+# Ignore config.py (configuration files)
+config.py
+
+.DS_Store
