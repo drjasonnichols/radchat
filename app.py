@@ -1,18 +1,6 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO
-from flask_jwt_extended import JWTManager
-from flask_cors import CORS
-
-# Initialize the SQLAlchemy object globally.
-db = SQLAlchemy()
-
-# Initialize SocketIO globally.
-socketio = SocketIO(cors_allowed_origins="*")
-
-# JWT Manager for handling authentication.
-jwt = JWTManager()
+from extensions import db, socketio, jwt, cors
 
 # Try to import the Config class from config.py (only if it exists)
 try:
@@ -22,7 +10,6 @@ except ImportError:
     print("config.py not found. Falling back to environment variables.")
     config_available = False
 
-# Function to create the Flask app instance and initialize extensions.
 def create_app():
     app = Flask(__name__)
 
@@ -40,6 +27,7 @@ def create_app():
     db.init_app(app)
     socketio.init_app(app)
     jwt.init_app(app)
+    cors.init_app(app)
 
     # Register blueprints for routing.
     from routes import routes_blueprint
@@ -54,6 +42,7 @@ def create_app():
     register_websocket_handlers(socketio)
 
     return app
+
 
 # Create the app instance.
 app = create_app()

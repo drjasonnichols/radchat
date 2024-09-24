@@ -2,7 +2,7 @@ import datetime
 from flask import Blueprint, current_app, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import decode_token
-from app import db
+from extensions import db  # Import db from the newly created extensions.py file
 import jwt
 from model import User, RoboChatter  # Import the User and RoboChatter models
 

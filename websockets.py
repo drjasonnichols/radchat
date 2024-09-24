@@ -2,7 +2,7 @@ from flask_socketio import emit, disconnect
 from flask import request
 from flask_jwt_extended import decode_token
 from model import User  # Import the User model here after db is initialized
-from app import db
+from extensions import db, socketio  # Import socketio and db from extensions.py
 
 # Function to register WebSocket event handlers for real-time communication
 def register_websocket_handlers(socketio):
