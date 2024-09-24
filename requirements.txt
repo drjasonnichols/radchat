@@ -7,4 +7,4 @@ Flask-SocketIO==5.3.2
 flask-jwt-extended==4.4.4
 flask-cors
 gunicorn==20.0.4
-eventlet
+eventlet==0.31.0
