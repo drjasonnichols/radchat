@@ -1,6 +1,8 @@
 import os
 from flask import Flask
 from extensions import db, socketio, jwt, cors
+from gevent import monkey
+monkey.patch_all()
 
 # Try to import the Config class from config.py (only if it exists)
 try:
@@ -25,7 +27,7 @@ def create_app():
 
     # Initialize extensions within the app context.
     db.init_app(app)
-    socketio.init_app(app)
+    socketio.init_app(app, async_mode='gevent')
     jwt.init_app(app)
     cors.init_app(app)
 

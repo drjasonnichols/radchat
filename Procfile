@@ -1,1 +1,1 @@
-web: gunicorn --worker-tmp-dir /dev/shm --worker-class eventlet --timeout 120 app:app
+web: gunicorn --worker-tmp-dir /dev/shm --worker-class gevent --timeout 120 app:app
