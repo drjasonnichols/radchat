@@ -48,7 +48,7 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    socketio.run(app)
+    socketio.run(app, allow_unsafe_werkzeug=True)
 
 # Passenger WSGI expects `app` to be the WSGI callable.
 # No need to call `socketio.run()` here since Passenger takes care of starting the app.
