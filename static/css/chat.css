@@ -11,8 +11,10 @@ body {
     align-items: center;
     /* Remove margin and padding for full screen effect */
     margin: 0;
-    padding: 0;
+    /*padding: 0;*/
     overflow: hidden;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .chat-window {
