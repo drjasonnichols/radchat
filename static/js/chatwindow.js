@@ -201,26 +201,16 @@ window.addEventListener('load', () => {
     });
 
     document.addEventListener('touchmove', function(e) {
-        e.preventDefault();
+        // Get the element being touched
+        const targetElement = e.target;
+    
+        // Check if the target element is the maincontent container or a descendant of it
+        if (!targetElement.closest('#maincontent')) {
+            // Prevent default scroll behavior for all elements except maincontent
+            e.preventDefault();
+        }
     }, { passive: false });
 
-    document.getElementById('maincontainer').addEventListener('touchmove', function(event) {
-        // Allow the event to pass only if the container can scroll
-        let top = document.getElementById('maincontainer').scrollTop;
-        let totalScroll = document.getElementById('maincontainer').scrollHeight;
-        let currentScroll = top + document.getElementById('maincontainer').offsetHeight;
-    
-        // If at the top or bottom, prevent further scroll
-        if (top === 0 && event.touches[0].clientY > 0) {
-            event.preventDefault();
-        } else if (currentScroll === totalScroll && event.touches[0].clientY < 0) {
-            event.preventDefault();
-        }
-        else{
-            event.stopPropagation(); 
-        }
-        // Otherwise, allow scrolling in the container
-    }, { passive: false });
 
     ChatSocket.connect();  // Establish the WebSocket connection
 
