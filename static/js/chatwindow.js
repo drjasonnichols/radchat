@@ -233,7 +233,10 @@ window.addEventListener('load', () => {
          //   }, 100);
             if (event.relatedTarget === document.getElementById('sendMessage')) {
                 event.preventDefault();  // This stops the default behavior
-                document.getElementById("messageInput").focus();
+                  document.getElementById("messageInput").focus();
+            }
+            else{
+                keyboardOut();
             }
         } 
     });
@@ -242,12 +245,15 @@ window.addEventListener('load', () => {
         event.preventDefault(); // Prevents the default behavior that causes the blur
         document.getElementById("messageInput").focus();  // Keep the input focused so that the keyboard stays up
         sendChat(document.getElementById("messageInput").value);
+        document.getElementById("messageInput").value = '';  // Clear the input field after sending
+
     });
 
     document.getElementById('sendMessage').addEventListener('mousedown', function(event) {
         event.preventDefault(); // Same logic for desktop browsers
         document.getElementById("messageInput").focus();
         sendChat(document.getElementById("messageInput").value);
+        document.getElementById("messageInput").value = '';  // Clear the input field after sending
     });
 
 
