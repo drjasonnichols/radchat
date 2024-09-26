@@ -195,7 +195,7 @@ window.addEventListener('load', () => {
 
     document.getElementById("messageInput").addEventListener("focus", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            resizeViewport(50);
+            resizeViewport(200);
         } 
     });
 
