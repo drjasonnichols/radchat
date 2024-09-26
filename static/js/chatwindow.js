@@ -217,6 +217,8 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     // Your resize logic here
                     resizeViewport();
+                    var chatWindow = document.getElementById("chatWindow");
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
                 }, 300);             }
             else {
                 resizeViewport(500);
