@@ -155,15 +155,15 @@ function refreshChatters(usernames, lurkerCount) {
 
 function resizeViewport(offset = 0) {
     let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
+    //document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
+    document.getElementById('maicontainer').style.setProperty('--vh', `${vh-(offset*0.01)}px`);
     //alert("resizing to: " + vh);
 }
 
 // Set up the ChatSocket connection and event listeners when the document loads
 // Initializes the WebSocket connection and sets event listeners for sending messages, logging off, and rendering RoboChatters.
 window.addEventListener('load', () => {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    resizeViewport();
 
     window.addEventListener('resize', () => {
         resizeViewport();
@@ -194,11 +194,15 @@ window.addEventListener('load', () => {
     });
 
     document.getElementById("messageInput").addEventListener("focus", function() {
-        resizeViewport(50);
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            resizeViewport(50);
+        } 
     });
 
     document.getElementById("messageInput").addEventListener("blur", function() {
-        resizeViewport();
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            resizeViewport();
+        } 
     });
 
 

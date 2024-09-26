@@ -7,7 +7,8 @@ body {
     /* Center content vertically and horizontally */
     height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     /* Remove margin and padding for full screen effect */
     margin: 0;
