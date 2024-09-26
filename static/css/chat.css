@@ -1,6 +1,7 @@
 /* General Page Styling */
 html{
     height: 100%;
+    height: calc(var(--vh, 1vh) * 100);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -29,10 +30,6 @@ body {
     padding-bottom: env(safe-area-inset-bottom);
 }
 
-.maincontainer{
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
-}
 
 .chat-window {
     /* Neon border and glow for the chat window */

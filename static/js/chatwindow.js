@@ -156,7 +156,7 @@ function refreshChatters(usernames, lurkerCount) {
 function resizeViewport(offset = 0) {
     let vh = window.innerHeight * 0.01;
     //document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
-    document.getElementById('maicontainer').style.setProperty('--vh', `${vh-(offset*0.01)}px`);
+    document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
     //alert("resizing to: " + vh);
 }
 
@@ -195,7 +195,12 @@ window.addEventListener('load', () => {
 
     document.getElementById("messageInput").addEventListener("focus", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            resizeViewport(200);
+            if(window.visualViewport){
+                resizeViewport(window.visualViewport.height);
+            }
+            else {
+                resizeViewport(200);
+            }
         } 
     });
 
