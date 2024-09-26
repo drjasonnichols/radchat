@@ -167,7 +167,7 @@ function resizeViewport(offset = 0) {
     //document.documentElement.scrollTop = 0;
     window.scrollTo({
         top: 0,
-        behavior: 'instant' // Or 'auto' if 'instant' is not available
+        behavior: 'auto' // Or 'auto' if 'instant' is not available
       });
 
 }
@@ -175,7 +175,10 @@ function resizeViewport(offset = 0) {
 function keyboardOut(){
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    document.documentElement.scrollTop = 0;
+    window.scrollTo({
+        top: 0,
+        behavior: 'auto' // Or 'auto' if 'instant' is not available
+      });
 }
 
 // Set up the ChatSocket connection and event listeners when the document loads
