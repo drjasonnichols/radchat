@@ -10,7 +10,7 @@ html{
     /* Remove margin and padding for full screen effect */
     margin: 0;
     padding: 0;
-    overflow: visible;
+    overflow: hidden;
     scroll-behavior: auto !important;
 }
 body {
@@ -28,7 +28,7 @@ body {
     /* Remove margin and padding for full screen effect */
     margin: 0;
     /*padding: 0;*/
-    overflow: visible;
+    overflow: hidden;
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
 }
