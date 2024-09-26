@@ -204,6 +204,21 @@ window.addEventListener('load', () => {
         e.preventDefault();
     }, { passive: false });
 
+    document.getElementById('maincontainer').addEventListener('touchmove', function(event) {
+        // Allow the event to pass only if the container can scroll
+        let top = document.getElementById('maincontainer').scrollTop;
+        let totalScroll = document.getElementById('maincontainer').scrollHeight;
+        let currentScroll = top + document.getElementById('maincontainer').offsetHeight;
+    
+        // If at the top or bottom, prevent further scroll
+        if (top === 0 && event.touches[0].clientY > 0) {
+            event.preventDefault();
+        } else if (currentScroll === totalScroll && event.touches[0].clientY < 0) {
+            event.preventDefault();
+        }
+        // Otherwise, allow scrolling in the container
+    }, { passive: false });
+
     ChatSocket.connect();  // Establish the WebSocket connection
 
     // Set the callback functions to handle new messages and refresh the chatters/robots list
