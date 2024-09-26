@@ -216,6 +216,9 @@ window.addEventListener('load', () => {
         } else if (currentScroll === totalScroll && event.touches[0].clientY < 0) {
             event.preventDefault();
         }
+        else{
+            event.stopPropagation(); 
+        }
         // Otherwise, allow scrolling in the container
     }, { passive: false });
 
