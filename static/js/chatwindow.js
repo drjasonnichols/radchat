@@ -164,7 +164,10 @@ function resizeViewport(offset = 0) {
         document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
         //alert("resizing to: " + vh);
     }
-    document.documentElement.scrollTop = 0;
+    window.scrollTo({
+        top: 0,
+        behavior: 'auto'  // This makes the scroll immediate
+      });
 }
 
 function keyboardOut(){
