@@ -167,6 +167,12 @@ function resizeViewport(offset = 0) {
     document.documentElement.scrollTop = 0;
 }
 
+function keyboardOut(){
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.scrollTop = 0;
+}
+
 // Set up the ChatSocket connection and event listeners when the document loads
 // Initializes the WebSocket connection and sets event listeners for sending messages, logging off, and rendering RoboChatters.
 window.addEventListener('load', () => {
@@ -217,9 +223,7 @@ window.addEventListener('load', () => {
 
     document.getElementById("messageInput").addEventListener("blur", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            if(!window.visualViewport){
-                resizeViewport();
-            }
+            keyboardOut();
         } 
     });
 
