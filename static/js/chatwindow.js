@@ -188,7 +188,10 @@ window.addEventListener('load', () => {
     //});
 
     window.visualViewport.addEventListener('resize', () => {
-        
+        if (!/Mobi|Android/i.test(navigator.userAgent)) {
+            resizeViewport();
+        }
+
     });
 
     ChatSocket.connect();  // Establish the WebSocket connection
