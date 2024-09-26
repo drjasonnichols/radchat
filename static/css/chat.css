@@ -1,6 +1,7 @@
 /* General Page Styling */
 html{
     height: 100%;
+    width: 100%;
     height: calc(var(--vh, 1vh) * 100);
     display: flex;
     flex-direction: column;
@@ -19,6 +20,7 @@ body {
     font-family: 'Press Start 2P', cursive;
     /* Center content vertically and horizontally */
     height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
