@@ -186,10 +186,7 @@ window.addEventListener('load', () => {
     //});
 
     window.visualViewport.addEventListener('resize', () => {
-        setTimeout(() => {
-            // Your resize logic here
-            resizeViewport();
-        }, 300); 
+        
     });
 
     ChatSocket.connect();  // Establish the WebSocket connection
@@ -219,8 +216,10 @@ window.addEventListener('load', () => {
     document.getElementById("messageInput").addEventListener("focus", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             if(window.visualViewport){
-                //resizeViewport();
-            }
+                setTimeout(() => {
+                    // Your resize logic here
+                    resizeViewport();
+                }, 300);             }
             else {
                 resizeViewport(500);
             }
