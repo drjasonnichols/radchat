@@ -241,7 +241,13 @@ window.addEventListener('load', () => {
     document.getElementById('sendMessage').addEventListener('touchstart', function(event) {
         event.preventDefault(); // Prevents the default behavior that causes the blur
         document.getElementById("messageInput").focus();  // Keep the input focused so that the keyboard stays up
-        sendChat();  // Call your send function
+        sendChat(document.getElementById("messageInput").value);
+    });
+
+    document.getElementById('sendMessage').addEventListener('mousedown', function(event) {
+        event.preventDefault(); // Same logic for desktop browsers
+        document.getElementById("messageInput").focus();
+        sendChat(document.getElementById("messageInput").value);
     });
 
 
