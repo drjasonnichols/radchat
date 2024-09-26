@@ -110,6 +110,7 @@ body {
     word-wrap: break-word; /* Proper word wrapping */
     resize: none; /* Prevent resizing */
     flex-grow: 1; /* Fill available width */
+    font-size: 16px;;
 }
 
 /* Input Focus State */

@@ -37,7 +37,7 @@ h4 {
     color: #00ffcc; /* Neon cyan text */
     border: 2px solid #00ffcc; /* Neon cyan border */
     font-family: inherit; /* Inherit the pixelated font */
-    font-size: 12px; /* Smaller font size for inputs */
+    font-size: 16px; /* Smaller font size for inputs */
 }
 
 button {
