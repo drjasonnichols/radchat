@@ -226,11 +226,16 @@ window.addEventListener('load', () => {
         } 
     });
 
-    document.getElementById("messageInput").addEventListener("blur", function() {
+    document.getElementById("messageInput").addEventListener("blur", function(event) {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            setTimeout(() => {
-                keyboardOut();
-            }, 100);
+        //    setTimeout(() => {
+        //        keyboardOut();
+         //   }, 100);
+            if (event.relatedTarget === document.getElementById('sendMessage')) {
+                event.preventDefault();  // This stops the default behavior
+                sendChat(document.getElementById("messageInput").value);             // Keep focus on the input box
+                document.getElementById("messageInput").focus();
+            }
         } 
     });
 
