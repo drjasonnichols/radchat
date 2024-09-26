@@ -171,7 +171,11 @@ function resizeViewport(offset = 0) {
 window.addEventListener('load', () => {
     resizeViewport();
 
-    window.addEventListener('resize', () => {
+    //window.addEventListener('resize', () => {
+    //    resizeViewport();
+    //});
+
+    window.visualViewport.addEventListener('resize', () => {
         resizeViewport();
     });
 
@@ -202,7 +206,7 @@ window.addEventListener('load', () => {
     document.getElementById("messageInput").addEventListener("focus", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             if(window.visualViewport){
-                resizeViewport();
+                //resizeViewport();
             }
             else {
                 resizeViewport(500);
@@ -212,7 +216,9 @@ window.addEventListener('load', () => {
 
     document.getElementById("messageInput").addEventListener("blur", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            resizeViewport();
+            if(!window.visualViewport){
+                resizeViewport();
+            }
         } 
     });
 
