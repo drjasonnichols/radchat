@@ -200,6 +200,7 @@ window.addEventListener('load', () => {
 
     });
 
+    /*
     document.addEventListener('touchmove', function(e) {
         // Get the element being touched
         const targetElement = e.target;
@@ -210,6 +211,7 @@ window.addEventListener('load', () => {
             e.preventDefault();
         }
     }, { passive: false });
+    */
 
 
     ChatSocket.connect();  // Establish the WebSocket connection
