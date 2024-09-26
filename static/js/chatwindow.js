@@ -183,7 +183,10 @@ window.addEventListener('load', () => {
     //});
 
     window.visualViewport.addEventListener('resize', () => {
-        resizeViewport();
+        setTimeout(() => {
+            // Your resize logic here
+            resizeViewport();
+        }, 300); 
     });
 
     ChatSocket.connect();  // Establish the WebSocket connection
