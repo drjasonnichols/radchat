@@ -155,7 +155,7 @@ function refreshChatters(usernames, lurkerCount) {
 
 function resizeViewport(offset = 0) {
     let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh-offset}px`);
+    document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
     //alert("resizing to: " + vh);
 }
 
