@@ -17,6 +17,11 @@ body {
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.maincontainer{
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+}
+
 .chat-window {
     /* Neon border and glow for the chat window */
     border: 3px solid #00ffcc;

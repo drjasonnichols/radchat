@@ -156,6 +156,14 @@ function refreshChatters(usernames, lurkerCount) {
 // Set up the ChatSocket connection and event listeners when the document loads
 // Initializes the WebSocket connection and sets event listeners for sending messages, logging off, and rendering RoboChatters.
 window.addEventListener('load', () => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+    window.addEventListener('resize', () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+
     ChatSocket.connect();  // Establish the WebSocket connection
 
     // Set the callback functions to handle new messages and refresh the chatters/robots list
