@@ -233,10 +233,15 @@ window.addEventListener('load', () => {
          //   }, 100);
             if (event.relatedTarget === document.getElementById('sendMessage')) {
                 event.preventDefault();  // This stops the default behavior
-                sendChat(document.getElementById("messageInput").value);             // Keep focus on the input box
                 document.getElementById("messageInput").focus();
             }
         } 
+    });
+
+    document.getElementById('sendMessage').addEventListener('touchstart', function(event) {
+        event.preventDefault(); // Prevents the default behavior that causes the blur
+        document.getElementById("messageInput").focus();  // Keep the input focused so that the keyboard stays up
+        sendChat();  // Call your send function
     });
 
 
