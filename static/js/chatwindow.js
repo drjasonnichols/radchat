@@ -154,10 +154,16 @@ function refreshChatters(usernames, lurkerCount) {
 }
 
 function resizeViewport(offset = 0) {
-    let vh = window.innerHeight * 0.01;
-    //document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
-    document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
-    //alert("resizing to: " + vh);
+    if(window.visualViewport){
+        let vh = window.visualViewport.height * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    else{
+        let vh = window.innerHeight * 0.01;
+        //document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
+        document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
+        //alert("resizing to: " + vh);
+    }
 }
 
 // Set up the ChatSocket connection and event listeners when the document loads
@@ -196,10 +202,10 @@ window.addEventListener('load', () => {
     document.getElementById("messageInput").addEventListener("focus", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             if(window.visualViewport){
-                resizeViewport(window.visualViewport.height);
+                resizeViewport();
             }
             else {
-                resizeViewport(200);
+                resizeViewport(500);
             }
         } 
     });
