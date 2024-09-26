@@ -153,6 +153,12 @@ function refreshChatters(usernames, lurkerCount) {
     });
 }
 
+function resizeViewport(offset = 0) {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh-offset}px`);
+    //alert("resizing to: " + vh);
+}
+
 // Set up the ChatSocket connection and event listeners when the document loads
 // Initializes the WebSocket connection and sets event listeners for sending messages, logging off, and rendering RoboChatters.
 window.addEventListener('load', () => {
@@ -160,9 +166,7 @@ window.addEventListener('load', () => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 
     window.addEventListener('resize', () => {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-        alert("resizing to: " + vh);
+        resizeViewport();
     });
 
     ChatSocket.connect();  // Establish the WebSocket connection
@@ -188,6 +192,15 @@ window.addEventListener('load', () => {
             messageInput.value = '';  // Clear the input field after sending
         }
     });
+
+    document.getElementById("messageInput").addEventListener("focus", function() {
+        resizeViewport(50);
+    });
+
+    document.getElementById("messageInput").addEventListener("blur", function() {
+        resizeViewport();
+    });
+
 
     // Set up event listener for the log-off button (main and offcanvas)
     document.getElementById('logOffButtonMain').addEventListener('click', () => {
