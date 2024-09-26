@@ -217,7 +217,7 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     // Your resize logic here
                     resizeViewport();
-                }, 400);             }
+                }, 300);             }
             else {
                 resizeViewport(500);
             }
@@ -226,7 +226,9 @@ window.addEventListener('load', () => {
 
     document.getElementById("messageInput").addEventListener("blur", function() {
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            keyboardOut();
+            setTimeout(() => {
+                keyboardOut();
+            }, 100);
         } 
     });
 
