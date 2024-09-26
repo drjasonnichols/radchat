@@ -217,7 +217,7 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     // Your resize logic here
                     resizeViewport();
-                }, 1000);             }
+                }, 400);             }
             else {
                 resizeViewport(500);
             }

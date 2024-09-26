@@ -10,6 +10,7 @@ html{
     margin: 0;
     padding: 0;
     overflow: hidden;
+    scroll-behavior: auto;
 }
 body {
     /* Full page dark background with neon text and retro-style font */
