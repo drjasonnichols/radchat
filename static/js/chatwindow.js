@@ -200,6 +200,10 @@ window.addEventListener('load', () => {
 
     });
 
+    document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+    }, { passive: false });
+
     ChatSocket.connect();  // Establish the WebSocket connection
 
     // Set the callback functions to handle new messages and refresh the chatters/robots list
