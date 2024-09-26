@@ -164,7 +164,7 @@ function resizeViewport(offset = 0) {
         document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
         //alert("resizing to: " + vh);
     }
-    //document.documentElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 
 }
 
@@ -217,7 +217,7 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     // Your resize logic here
                     resizeViewport();
-                }, 500);             }
+                }, 1000);             }
             else {
                 resizeViewport(500);
             }
