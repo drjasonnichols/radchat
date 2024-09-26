@@ -1,4 +1,15 @@
 /* General Page Styling */
+html{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /* Remove margin and padding for full screen effect */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 body {
     /* Full page dark background with neon text and retro-style font */
     background-color: #1a1a1a;
