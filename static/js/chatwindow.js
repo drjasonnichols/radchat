@@ -212,18 +212,18 @@ window.addEventListener('load', () => {
 
     });
 
-    /*
+    
     document.addEventListener('touchmove', function(e) {
         // Get the element being touched
         const targetElement = e.target;
     
         // Check if the target element is the maincontent container or a descendant of it
-        if (!targetElement.closest('#maincontent')) {
+        if (!targetElement.closest('#chatWindow')) {
             // Prevent default scroll behavior for all elements except maincontent
             e.preventDefault();
         }
     }, { passive: false });
-    */
+    
 
 
     ChatSocket.connect();  // Establish the WebSocket connection
