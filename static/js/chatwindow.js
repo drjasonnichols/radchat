@@ -247,26 +247,26 @@ window.addEventListener('load', () => {
 
     // Prevent scroll propagation to parent containers
     chatWindow.addEventListener('touchmove', function(e) {
-        // Get the current scroll position of the chat window
+        // Get the total scroll height minus the visible part (scrollable distance)
         const totalScroll = chatWindow.scrollHeight - chatWindow.clientHeight;
+        // Get the current scroll position of the chat window
         const currentScroll = chatWindow.scrollTop;
-    
+
         // Stop the event from propagating to parent containers
         e.stopPropagation();
-    
-        // If the chatWindow can scroll
+
+        // If the chatWindow has scrollable content
         if (totalScroll > 0) {
-            // Prevent scrolling if the user is at the top and trying to scroll up
-            if (currentScroll === 0 && e.touches[0].clientY > 0) {
-                e.preventDefault();  // Prevents bouncing at the top
+            // If user is at the top and trying to scroll further up
+            if (currentScroll <= 0 && e.touches[0].clientY > 0) {
+                e.preventDefault();
             }
-    
-            // Prevent scrolling if the user is at the bottom and trying to scroll down
-            if (currentScroll === totalScroll && e.touches[0].clientY < 0) {
-                e.preventDefault();  // Prevents bouncing at the bottom
+            // If user is at the bottom and trying to scroll further down
+            else if (currentScroll >= totalScroll && e.touches[0].clientY < 0) {
+                e.preventDefault();
             }
         } else {
-            // If there’s no scrollable content in chatWindow, prevent the default behavior
+            // If no scrollable content, prevent any scrolling action
             e.preventDefault();
         }
     });
