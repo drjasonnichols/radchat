@@ -159,6 +159,9 @@ function resizeViewport(offset = 0) {
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         document.getElementById('maincontainer').style.height = `${vh}px`;
         document.querySelector('.row').style.height = `${vh}px`;
+        const chatWindow = document.getElementById('chatWindow');
+        const remainingHeight = vh - document.getElementById('messageInput').offsetHeight;
+        chatWindow.style.height = `${remainingHeight}px`;
     }
     else{
         let vh = window.innerHeight * 0.01;
@@ -166,6 +169,9 @@ function resizeViewport(offset = 0) {
         document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
         document.getElementById('maincontainer').style.height = `${vh-(offset*0.01)}px`;
         document.querySelector('.row').style.height =  `${vh-(offset*0.01)}px`;
+        const chatWindow = document.getElementById('chatWindow');
+        const remainingHeight = vh - (offset*0.01) - document.getElementById('messageInput').offsetHeight;
+        chatWindow.style.height = `${remainingHeight}px`;
 
         //alert("resizing to: " + vh);
     }
@@ -182,6 +188,7 @@ function keyboardOut(){
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     document.getElementById('maincontainer').style.height = `${vh}px`;
     document.querySelector('.row').style.height = `${vh}px`;
+    document.getElementById('chatWindow').style.height = 'auto';  // Reset chat window height
 
     window.scrollTo({
         top: 0,
