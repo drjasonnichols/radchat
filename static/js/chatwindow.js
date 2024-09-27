@@ -258,11 +258,11 @@ window.addEventListener('load', () => {
         // If the chatWindow has scrollable content
         if (totalScroll > 0) {
             // If user is at the top and trying to scroll further up
-            if (currentScroll <= 0 && e.touches[0].clientY > 0) {
+            if (currentScroll < 0 && e.touches[0].clientY > 0) {
                 e.preventDefault();
             }
             // If user is at the bottom and trying to scroll further down
-            else if (currentScroll >= totalScroll && e.touches[0].clientY < 0) {
+            else if (currentScroll > totalScroll && e.touches[0].clientY < 0) {
                 e.preventDefault();
             }
         } else {
