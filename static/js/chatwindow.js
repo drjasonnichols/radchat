@@ -223,6 +223,24 @@ window.addEventListener('load', () => {
             e.preventDefault();
         }
     }, { passive: false });
+
+    // Select the elements
+    const htmlElement = document.documentElement; // html tag
+    const bodyElement = document.body; // body tag
+    const mainContainer = document.getElementById('maincontainer'); // maincontainer div
+    const rowElement = document.querySelector('.row'); // row div
+
+    // Function to prevent scrolling
+    function preventScroll(event) {
+        event.target.scrollTop = 0;
+        event.target.scrollLeft = 0;
+    }
+
+    // Attach scroll event listeners
+    htmlElement.addEventListener('scroll', preventScroll);
+    bodyElement.addEventListener('scroll', preventScroll);
+    mainContainer.addEventListener('scroll', preventScroll);
+    rowElement.addEventListener('scroll', preventScroll);
     
 
 
