@@ -158,12 +158,15 @@ function resizeViewport(offset = 0) {
         let vh = window.visualViewport.height * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         document.getElementById('maincontainer').style.height = `${vh}px`;
+        document.querySelector('.row').style.height = `${vh}px`;
     }
     else{
         let vh = window.innerHeight * 0.01;
         //document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
         document.documentElement.style.setProperty('--vh', `${vh-(offset*0.01)}px`);
         document.getElementById('maincontainer').style.height = `${vh-(offset*0.01)}px`;
+        document.querySelector('.row').style.height =  `${vh-(offset*0.01)}px`;
+
         //alert("resizing to: " + vh);
     }
     //document.documentElement.scrollTop = 0;
@@ -178,6 +181,8 @@ function keyboardOut(){
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     document.getElementById('maincontainer').style.height = `${vh}px`;
+    document.querySelector('.row').style.height = `${vh}px`;
+
     window.scrollTo({
         top: 0,
         behavior: 'auto' // Or 'auto' if 'instant' is not available
