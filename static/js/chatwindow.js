@@ -245,7 +245,7 @@ window.addEventListener('load', () => {
 
     const chatWindow = document.getElementById('chatWindow');
 
-    // Prevent scroll propagation to parent containers
+    // Prevent scroll propagation to parent containers and adjust scroll locking
     chatWindow.addEventListener('touchmove', function(e) {
         // Get the total scroll height minus the visible part (scrollable distance)
         const totalScroll = chatWindow.scrollHeight - chatWindow.clientHeight;
@@ -259,10 +259,14 @@ window.addEventListener('load', () => {
         if (totalScroll > 0) {
             // If user is at the top and trying to scroll further up
             if (currentScroll <= 0 && e.touches[0].clientY > 0) {
+                // Prevent default behavior and set scroll to 1px to avoid locking at the top
+                chatWindow.scrollTop = 1;
                 e.preventDefault();
             }
             // If user is at the bottom and trying to scroll further down
             else if (currentScroll >= totalScroll && e.touches[0].clientY < 0) {
+                // Prevent default behavior and set scroll to totalScroll - 1px to avoid locking at the bottom
+                chatWindow.scrollTop = totalScroll - 1;
                 e.preventDefault();
             }
         } else {
