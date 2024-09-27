@@ -320,6 +320,7 @@ window.addEventListener('load', () => {
             event.preventDefault();  // Prevent the default behavior (new line)
             const messageInput = document.getElementById('messageInput');
             sendChat(messageInput.value);  // Send the chat message
+            scrollChatWindow();
             messageInput.value = '';  // Clear the input field after sending
         }
     });
