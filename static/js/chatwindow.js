@@ -189,11 +189,18 @@ function keyboardOut(){
     document.getElementById('maincontainer').style.height = `${vh}px`;
     document.querySelector('.row').style.height = `${vh}px`;
     document.getElementById('chatWindow').style.height = 'auto';  // Reset chat window height
+    const totalScroll = document.getElementById('chatWindow').scrollHeight - document.getElementById('chatWindow').clientHeight;
+    const currentScroll = element.scrollTop;
+    if (currentScroll >= totalScroll) {
+        element.scrollTop = totalScroll;  // Scroll to the bottom if already there
+    }
+
 
     window.scrollTo({
         top: 0,
         behavior: 'auto' // Or 'auto' if 'instant' is not available
       });
+
 }
 
 // Set up the ChatSocket connection and event listeners when the document loads
