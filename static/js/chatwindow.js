@@ -183,6 +183,11 @@ function resizeViewport(offset = 0) {
 
 }
 
+function scrollChatWindow(){
+    const chatWindow = document.getElementById('chatWindow');
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
 function keyboardOut(){
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -190,9 +195,9 @@ function keyboardOut(){
     document.querySelector('.row').style.height = `${vh}px`;
     document.getElementById('chatWindow').style.height = 'auto';  // Reset chat window height
     const totalScroll = document.getElementById('chatWindow').scrollHeight - document.getElementById('chatWindow').clientHeight;
-    const currentScroll = element.scrollTop;
+    const currentScroll = document.getElementById('chatWindow').scrollTop;
     if (currentScroll >= totalScroll) {
-        element.scrollTop = totalScroll;  // Scroll to the bottom if already there
+        document.getElementById('chatWindow').scrollTop = totalScroll;  // Scroll to the bottom if already there
     }
 
 
@@ -305,6 +310,7 @@ window.addEventListener('load', () => {
     document.getElementById('sendMessage').addEventListener('click', () => {
         const messageInput = document.getElementById('messageInput');
         sendChat(messageInput.value);  // Send the chat message
+        scrollChatWindow();
         messageInput.value = '';  // Clear the input field after sending
     });
 
