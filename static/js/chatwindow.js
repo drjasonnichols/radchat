@@ -245,33 +245,43 @@ window.addEventListener('load', () => {
 
     const chatWindow = document.getElementById('chatWindow');
 
-    // Prevent scroll propagation to parent containers and adjust scroll locking
+    // Prevent scroll propagation and handle top/bottom scrolling
     chatWindow.addEventListener('touchmove', function(e) {
-        // Get the total scroll height minus the visible part (scrollable distance)
+        // Get the total scrollable distance
         const totalScroll = chatWindow.scrollHeight - chatWindow.clientHeight;
-        // Get the current scroll position of the chat window
+        // Get the current scroll position
         const currentScroll = chatWindow.scrollTop;
 
         // Stop the event from propagating to parent containers
         e.stopPropagation();
 
-        // If the chatWindow has scrollable content
+        // Handle scrolling at the top and bottom
         if (totalScroll > 0) {
-            // If user is at the top and trying to scroll further up
             if (currentScroll <= 0 && e.touches[0].clientY > 0) {
-                // Prevent default behavior and set scroll to 1px to avoid locking at the top
+                // If at the top and trying to scroll up, scroll slightly down to prevent locking
                 chatWindow.scrollTop = 1;
                 e.preventDefault();
-            }
-            // If user is at the bottom and trying to scroll further down
-            else if (currentScroll >= totalScroll && e.touches[0].clientY < 0) {
-                // Prevent default behavior and set scroll to totalScroll - 1px to avoid locking at the bottom
+            } else if (currentScroll >= totalScroll && e.touches[0].clientY < 0) {
+                // If at the bottom and trying to scroll down, scroll slightly up to prevent locking
                 chatWindow.scrollTop = totalScroll - 1;
                 e.preventDefault();
             }
         } else {
-            // If no scrollable content, prevent any scrolling action
+            // If there is no scrollable content, prevent any scrolling
             e.preventDefault();
+        }
+    });
+
+    // Listen for the 'scroll' event to ensure proper behavior
+    chatWindow.addEventListener('scroll', function(e) {
+        const totalScroll = chatWindow.scrollHeight - chatWindow.clientHeight;
+        const currentScroll = chatWindow.scrollTop;
+
+        // If at the top or bottom, adjust the scroll slightly to prevent locking
+        if (currentScroll <= 0) {
+            chatWindow.scrollTop = 1; // Prevent sticking at the top
+        } else if (currentScroll >= totalScroll) {
+            chatWindow.scrollTop = totalScroll - 1; // Prevent sticking at the bottom
         }
     });
 
