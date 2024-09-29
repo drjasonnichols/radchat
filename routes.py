@@ -168,7 +168,7 @@ def protected_task():
     robot_message = response.text
 
     # Broadcast the new message using WebSocket
-    socketio.emit('broadcast_message', {'message': robot_message}, broadcast=True)
+    socketio.emit('broadcast_message', {'message': robot_message})
     # Create a new ChatHistory entry
     try:
         chat_history_entry = ChatHistory(message=robot_message)
