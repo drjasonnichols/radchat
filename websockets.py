@@ -60,11 +60,16 @@ def register_websocket_handlers(socketio):
             if user:
                 user_message = f"{user.name}: {message}"  # Format the message
                 try:
+                    db = current_app.extensions['sqlalchemy'].db
                     # Create a new ChatHistory entry
                     chat_history_entry = ChatHistory(message=user_message)
                     db.session.add(chat_history_entry)  # Add it to the session
                     db.session.commit()  # Commit the transaction to save to the database
-                    print(f"Chat history entry successfully saved: {user_message}")
+                     # Check if the object now has a valid ID assigned by the database
+                    if chat_history_entry.id:
+                        print(f"Chat history entry successfully saved with ID: {chat_history_entry.id}")
+                    else:
+                        print("Commit succeeded, but no ID was returned.")                    
                 except Exception as db_error:
                     # Log any database errors
                     print(f"Error saving chat history to database: {str(db_error)}")
