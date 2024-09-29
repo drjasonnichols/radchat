@@ -21,7 +21,7 @@ def create_app():
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', Config.SQLALCHEMY_TRACK_MODIFICATIONS)
         app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', Config.SECRET_KEY)
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', False)  # Default to False
         app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-secret-key')  # Provide a default or ensure it's set in production
 
