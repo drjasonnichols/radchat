@@ -28,3 +28,17 @@ class RoboChatter(db.Model):
     # String representation of the RoboChatter object for debugging
     def __repr__(self):
         return f'<RoboChatter {self.name}>'
+
+
+# ChatHistory model representing the 'chat_history' table in the database.
+class ChatHistory(db.Model):
+    __tablename__ = 'chat_history'  # Specifies the table name
+
+    # Define the columns for the 'chat_history' table
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Primary key
+    message = db.Column(db.Text, nullable=False)  # The chat message content
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())  # Timestamp of when the message was created
+
+    # String representation of the ChatHistory object for debugging
+    def __repr__(self):
+        return f'<ChatHistory id={self.id}, message="{self.message[:20]}...">'

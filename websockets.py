@@ -1,7 +1,7 @@
 from flask_socketio import emit, disconnect
 from flask import request
 from flask_jwt_extended import decode_token
-from model import User  # Import the User model here after db is initialized
+from model import User, ChatHistory  # Import the User model here after db is initialized
 from extensions import db, socketio  # Import socketio and db from extensions.py
 
 # Function to register WebSocket event handlers for real-time communication
@@ -58,6 +58,12 @@ def register_websocket_handlers(socketio):
             user = User.query.filter_by(email=decoded_token['sub']).first()  # Fetch the user by email
 
             if user:
+                user_message = f"{user.name}: {message}"  # Format the message
+                # Create a new ChatHistory entry
+                chat_history_entry = ChatHistory(message=user_message)
+                db.session.add(chat_history_entry)  # Add it to the session
+                db.session.commit()  # Commit the transaction to save to the database
+
                 # Check if the message is a robot action message (enabling/disabling a robot)
                 if isRobotActionMessage(message):
                     # Broadcast the robot action message to all clients
