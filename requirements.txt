@@ -8,4 +8,4 @@ flask-jwt-extended==4.4.4
 flask-cors
 gunicorn==20.0.4
 gevent
-#mysqlclient==2.2.4
+cryptography>=3.4
