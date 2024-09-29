@@ -124,18 +124,16 @@ def protected_task():
 
     # Set up the generative model with the API key
     genai.configure(api_key=gemini_api_key)
-    #if not validate_api_key(request):  # Validate API key
-    #    return jsonify({"error": "Unauthorized access, invalid API key"}), 401
 
     # Fetch the enabled RoboChatters
     robochatters = RoboChatter.query.filter_by(enabled=True).all()
     if not robochatters:
         return jsonify({"error": "No RoboChatters are enabled"}), 400
 
-    # Fetch the 10 most recent messages, ordered by most recent
+    # Fetch the 100 most recent messages, ordered by most recent
     chat_history = ChatHistory.query.order_by(ChatHistory.id.desc()).limit(100).all()
 
-    # Prepare the conversation history for the model
+    # Prepare the conversation history for the model with only the 'user' role
     history = [{"role": "user", "parts": message.message} for message in chat_history]
 
     # Ensure that the total token size stays below 2000
@@ -148,26 +146,27 @@ def protected_task():
         final_history.append(message)
         total_tokens += message_tokens
 
-    # Add instructions for the AI to pick a robot
-    final_history.append({
-        "role": "system",
-        "parts": "Based on the following history, decide which RoboChatter it makes the most sense to reply as, using the personality provided in their description."
-    })
-
-    # Combine robot descriptions into a message
+    # Combine robot descriptions into a prompt as part of the user role
     robo_descriptions = "\n".join([f"{robo.name}: {robo.description}" for robo in robochatters])
-    final_history.append({
-        "role": "system",
-        "parts": f"RoboChatters: {robo_descriptions}"
-    })
 
-    # Set up the generative model (replace with the correct model)
+    # Add the instructions and RoboChatter descriptions into the user role prompt
+    final_prompt = (
+        "Based on the following history, continue the conversation as the appropriate RoboChatter, "
+        "using the personality provided in their description.\n"
+        "RoboChatters:\n"
+        f"{robo_descriptions}\n"
+        "Here is the conversation history:\n"
+        f"{' '.join([msg['parts'] for msg in final_history])}\n"
+        "Generate a reply as the most appropriate RoboChatter in the form: 'RoboChatter: <response>'."
+    )
+
+    # Set up the generative model
     model = genai.GenerativeModel("gemini-1.5-flash")
-    chat = model.start_chat(history=final_history)
 
-    # Generate a message
-    response = chat.send_message("Continue the conversation as the appropriate RoboChatter.  Generate a reply in the following form: 'RoboChatter: <response>'.  Here is their backstory: Gizmo, Circuit, and Clank are androids stuck in the 80’s, servicing arcade games and competing in regional breakdancing competitions to pay the bills (Giz does a really good robot). They were sucked into the time displacement field with a T-800 one day on their way to work at the Cyberdyne loading docks, and have been trapped in that decade ever since.")
+    # Generate a message directly using the prompt
+    response = model.generate_content(final_prompt)
     robot_message = response.text
+
     # Broadcast the new message using WebSocket
     socketio.emit('new_message', {'message': robot_message})
 
