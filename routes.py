@@ -169,6 +169,20 @@ def protected_task():
 
     # Broadcast the new message using WebSocket
     socketio.emit('broadcast_message', {'message': robot_message}, broadcast=True)
+    # Create a new ChatHistory entry
+    try:
+        chat_history_entry = ChatHistory(message=robot_message)
+        db.session.add(chat_history_entry)  # Add it to the session
+        db.session.commit()  # Commit the transaction to save to the database
+            # Check if the object now has a valid ID assigned by the database
+        if chat_history_entry.id:
+            print(f"Chat history entry successfully saved with ID: {chat_history_entry.id}")
+        else:
+            print("Commit succeeded, but no ID was returned.")                    
+    except Exception as db_error:
+        # Log any database errors
+        print(f"Error saving chat history to database: {str(db_error)}")
+        db.session.rollback()  # Rollback in case of error to maintain session integrity
 
     # Get the IDs of the 100 most recent messages
     recent_ids = db.session.query(ChatHistory.id).order_by(ChatHistory.id.desc()).limit(100).subquery()
