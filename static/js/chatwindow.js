@@ -99,13 +99,12 @@ function showNewChat(messageData) {
     const newMessage = document.createElement('div');
     newMessage.classList.add('chat-message');
     newMessage.innerText = messageData.message;  // Set the text of the new message
-    chatWindow.appendChild(newMessage);  // Append the message to the chat window
 
     const scrollBuffer = 100;  // Small buffer to account for minor scroll height inconsistencies
-
     // Check if the user is scrolled to the bottom
     const isScrolledToBottom = Math.abs(chatWindow.scrollHeight - chatWindow.scrollTop - chatWindow.clientHeight) <= scrollBuffer;
 
+    chatWindow.appendChild(newMessage);  // Append the message to the chat window
     // If user is scrolled to the bottom, auto-scroll down
     if (isScrolledToBottom) {
         chatWindow.scrollTop = chatWindow.scrollHeight;
