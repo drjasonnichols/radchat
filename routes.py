@@ -168,7 +168,7 @@ def protected_task():
     robot_message = response.text
 
     # Broadcast the new message using WebSocket
-    socketio.emit('new_message', {'message': robot_message})
+    socketio.emit('broadcast_message', {'message': robot_message}, broadcast=True)
 
     # Get the IDs of the 100 most recent messages
     recent_ids = db.session.query(ChatHistory.id).order_by(ChatHistory.id.desc()).limit(100).subquery()
