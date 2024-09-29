@@ -1,6 +1,6 @@
 # extensions.py
-import pymysql
-pymysql.install_as_MySQLdb()
+#import pymysql
+#pymysql.install_as_MySQLdb()
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
 from flask_jwt_extended import JWTManager
