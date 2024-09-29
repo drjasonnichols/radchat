@@ -2,9 +2,10 @@ import datetime
 from flask import Blueprint, current_app, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import decode_token
-from extensions import db  # Import db from the newly created extensions.py file
+from extensions import db, socketio  # Import db from the newly created extensions.py file
 import jwt
-from model import User, RoboChatter  # Import the User and RoboChatter models
+from model import User, RoboChatter, ChatHistory  # Import the User and RoboChatter models
+import google.generativeai as genai
 
 # Define a blueprint for routing (modularizes the app's routes)
 routes_blueprint = Blueprint('routes', __name__)
@@ -112,3 +113,70 @@ def toggle_robochatter(robochatter_id):
     robochatter.enabled = not robochatter.enabled  # Toggle the enabled status
     db.session.commit()  # Commit the change to the database
     return jsonify({"id": robochatter.id, "name": robochatter.name, "enabled": robochatter.enabled}), 200  # Return updated status
+
+
+#private route for making the robots talk
+# New route that is only accessible via the correct API key
+@routes_blueprint.route('/protected_task', methods=['POST'])
+def protected_task():
+    # Retrieve the API key from app config
+    gemini_api_key = current_app.config['GEMINI_API_KEY']
+
+    # Set up the generative model with the API key
+    genai.configure(api_key=gemini_api_key)
+    #if not validate_api_key(request):  # Validate API key
+    #    return jsonify({"error": "Unauthorized access, invalid API key"}), 401
+
+    # Fetch the enabled RoboChatters
+    robochatters = RoboChatter.query.filter_by(enabled=True).all()
+    if not robochatters:
+        return jsonify({"error": "No RoboChatters are enabled"}), 400
+
+    # Fetch the 10 most recent messages, ordered by most recent
+    chat_history = ChatHistory.query.order_by(ChatHistory.id.desc()).limit(100).all()
+
+    # Prepare the conversation history for the model
+    history = [{"role": "user", "parts": message.message} for message in chat_history]
+
+    # Ensure that the total token size stays below 2000
+    total_tokens = 0
+    final_history = []
+    for message in history:
+        message_tokens = len(message['parts'].split())  # Approximate token count by word count
+        if total_tokens + message_tokens > 2000:
+            break
+        final_history.append(message)
+        total_tokens += message_tokens
+
+    # Add instructions for the AI to pick a robot
+    final_history.append({
+        "role": "system",
+        "parts": "Based on the following history, decide which RoboChatter it makes the most sense to reply as, using the personality provided in their description."
+    })
+
+    # Combine robot descriptions into a message
+    robo_descriptions = "\n".join([f"{robo.name}: {robo.description}" for robo in robochatters])
+    final_history.append({
+        "role": "system",
+        "parts": f"RoboChatters: {robo_descriptions}"
+    })
+
+    # Set up the generative model (replace with the correct model)
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    chat = model.start_chat(history=final_history)
+
+    # Generate a message
+    response = chat.send_message("Continue the conversation as the appropriate RoboChatter.  Generate a reply in the following form: 'RoboChatter: <response>'.  Here is their backstory: Gizmo, Circuit, and Clank are androids stuck in the 80’s, servicing arcade games and competing in regional breakdancing competitions to pay the bills (Giz does a really good robot). They were sucked into the time displacement field with a T-800 one day on their way to work at the Cyberdyne loading docks, and have been trapped in that decade ever since.")
+    robot_message = response.text
+    # Broadcast the new message using WebSocket
+    socketio.emit('new_message', {'message': robot_message})
+
+    # Get the IDs of the 100 most recent messages
+    recent_ids = db.session.query(ChatHistory.id).order_by(ChatHistory.id.desc()).limit(100).subquery()
+    # Delete all records that are not in the most recent 100
+    ChatHistory.query.filter(ChatHistory.id.notin_(recent_ids)).delete(synchronize_session=False)
+    # Commit the changes to the database
+    db.session.commit()
+
+    # Return the robot's message
+    return jsonify({"robot_message": robot_message}), 200

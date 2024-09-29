@@ -20,11 +20,13 @@ def create_app():
         app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', Config.SQLALCHEMY_DATABASE_URI)
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', Config.SQLALCHEMY_TRACK_MODIFICATIONS)
         app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', Config.SECRET_KEY)
+        app.config['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY', Config.GEMINI_API_KEY)  # Add Gemini API key here
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', False)  # Default to False
         app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-secret-key')  # Provide a default or ensure it's set in production
-
+        app.config['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY')  # Add the Gemini API key here as well
+    
     # Initialize extensions within the app context.
     db.init_app(app)
     socketio.init_app(app, async_mode='gevent')

@@ -9,3 +9,4 @@ flask-cors
 gunicorn==20.0.4
 gevent
 cryptography>=3.4
+google-generativeai
