@@ -1,10 +1,11 @@
 import datetime
+import random
 from flask import Blueprint, current_app, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import decode_token
 from extensions import db, socketio  # Import db from the newly created extensions.py file
 import jwt
-from model import User, RoboChatter, ChatHistory  # Import the User and RoboChatter models
+from model import User, RoboChatter, ChatHistory, Settings  # Import the User and RoboChatter models
 import google.generativeai as genai
 
 # Define a blueprint for routing (modularizes the app's routes)
@@ -133,30 +134,23 @@ def protected_task():
     # Fetch the 100 most recent messages, ordered by most recent
     chat_history = ChatHistory.query.order_by(ChatHistory.id.desc()).limit(100).all()
 
-    # Prepare the conversation history for the model with only the 'user' role
-    history = [{"role": "user", "parts": message.message} for message in chat_history]
+    # Generate a single string for the conversation history, each message on a new line
+    conversation_history = "\n".join([message.message for message in chat_history])
 
-    # Ensure that the total token size stays below 2000
-    total_tokens = 0
-    final_history = []
-    for message in history:
-        message_tokens = len(message['parts'].split())  # Approximate token count by word count
-        if total_tokens + message_tokens > 2000:
-            break
-        final_history.append(message)
-        total_tokens += message_tokens
+    # Retrieve the prompt template from the 'Settings' table
+    prompt_template = Settings.query.filter_by(key='prompt_template').first()
 
-    # Combine robot descriptions into a prompt as part of the user role
-    robo_descriptions = "\n".join([f"{robo.name}: {robo.description}" for robo in robochatters])
+    if not prompt_template:
+        return jsonify({"error": "Prompt template not found"}), 500
 
-    # Add the instructions and RoboChatter descriptions into the user role prompt
-    final_prompt = (
-        "Read the list of robochatters below, then read the conversation history.  Based on the flow of the conversation, select a robochatter to respond as that would move the conversation forward in an entertaining way.  Try to engage other chatters in a conversation over whatever is being discussed.  Use the discussion history as feedback to decide if the discussion is going well or not.  If it isn't, adjust your reply accordingly.\n"
-        "RoboChatters:\n"
-        f"{robo_descriptions}\n"
-        "Here is the conversation history:\n"
-        f"{' '.join([msg['parts'] for msg in final_history])}\n"
-        "Generate your reply in the form: '<robochatter you are responding as>: <response>' without placing quotes around the response, and providing the name of the robochatter you are speaking as.  Keep your responses shorter than 50 words.  They can be as short as 1 word."
+    # Select a random RoboChatter from the enabled list
+    selected_robochatter = random.choice(robochatters)
+
+    # Construct the final prompt by replacing placeholders in the template
+    final_prompt = prompt_template.value.format(
+        robochatter_name=selected_robochatter.name,
+        robochatter_description=selected_robochatter.description,
+        conversation_history=conversation_history
     )
 
     # Set up the generative model
@@ -168,26 +162,21 @@ def protected_task():
 
     # Broadcast the new message using WebSocket
     socketio.emit('broadcast_message', {'message': robot_message})
-    # Create a new ChatHistory entry
+
+    # Save the generated robot message to the chat history
     try:
         chat_history_entry = ChatHistory(message=robot_message)
         db.session.add(chat_history_entry)  # Add it to the session
         db.session.commit()  # Commit the transaction to save to the database
-            # Check if the object now has a valid ID assigned by the database
-        if chat_history_entry.id:
-            print(f"Chat history entry successfully saved with ID: {chat_history_entry.id}")
-        else:
-            print("Commit succeeded, but no ID was returned.")                    
+        print(f"Chat history entry successfully saved with ID: {chat_history_entry.id}")
     except Exception as db_error:
-        # Log any database errors
         print(f"Error saving chat history to database: {str(db_error)}")
-        db.session.rollback()  # Rollback in case of error to maintain session integrity
+        db.session.rollback()
 
     # Get the IDs of the 100 most recent messages
     recent_ids = db.session.query(ChatHistory.id).order_by(ChatHistory.id.desc()).limit(100).subquery()
     # Delete all records that are not in the most recent 100
     ChatHistory.query.filter(ChatHistory.id.notin_(recent_ids)).delete(synchronize_session=False)
-    # Commit the changes to the database
     db.session.commit()
 
     # Return the robot's message

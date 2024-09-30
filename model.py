@@ -42,3 +42,15 @@ class ChatHistory(db.Model):
     # String representation of the ChatHistory object for debugging
     def __repr__(self):
         return f'<ChatHistory id={self.id}, message="{self.message[:20]}...">'
+    
+class Settings(db.Model):
+    __tablename__ = 'settings'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    key_name = db.Column(db.String(255), unique=True, nullable=False)  # Key name to identify each setting
+    value = db.Column(db.Text, nullable=False)  # Stores the prompt or other settings
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f'<Settings {self.key_name}>'
