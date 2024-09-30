@@ -138,7 +138,7 @@ def protected_task():
     conversation_history = "\n".join([message.message for message in chat_history])
 
     # Retrieve the prompt template from the 'Settings' table
-    prompt_template = Settings.query.filter_by(key='prompt_template').first()
+    prompt_template = Settings.query.filter_by(key_name='prompt_template').first()
 
     if not prompt_template:
         return jsonify({"error": "Prompt template not found"}), 500
