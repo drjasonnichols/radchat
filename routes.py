@@ -151,12 +151,12 @@ def protected_task():
 
     # Add the instructions and RoboChatter descriptions into the user role prompt
     final_prompt = (
-        "randomly select a robochatter from the list below and assume their personality, but only slightly.  Then read the chat history that follows and come up with a response that this robochatter would make in the context of the discussion, that naturally keeps the discussion moving forward, or changes the topic if it seems like the discussion is getting repetative or stale.\n"
+        "randomly select a robochatter from the list below and assume their personality.  Then read the chat history that follows and come up with a response that fits with the flow of the discussion.  Do not repeat prior sentiments that this robot has already shared in the chat history.  Try to carry on a discussion with the prior chatters, including the robots.\n"
         "RoboChatters:\n"
         f"{robo_descriptions}\n"
         "Here is the conversation history:\n"
         f"{' '.join([msg['parts'] for msg in final_history])}\n"
-        "Generate your reply in the form: 'RoboChatter: <response>' without placing quotes around the response.  Keep your responses shorter than 50 words."
+        "Generate your reply in the form: 'RoboChatter: <response>' without placing quotes around the response.  Keep your responses shorter than 50 words.  They can be as short as 1 word."
     )
 
     # Set up the generative model
