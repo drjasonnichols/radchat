@@ -131,14 +131,20 @@ def protected_task():
     if not robochatters:
         return jsonify({"error": "No RoboChatters are enabled"}), 400
 
+    history_count = Settings.query.filter_by(key_name='history_count').first()
+    if not history_count:
+        return jsonify({"error": "History count setting not found"}), 500
+    
+    history_count = int(history_count.value)
     # Fetch the 100 most recent messages, ordered by most recent
-    chat_history = ChatHistory.query.order_by(ChatHistory.id.desc()).limit(100).all()
+    chat_history = ChatHistory.query.order_by(ChatHistory.id.desc()).limit(history_count).all()
 
     # Generate a single string for the conversation history, each message on a new line
     conversation_history = "\n".join([message.message for message in chat_history])
 
     # Retrieve the prompt template from the 'Settings' table
     prompt_template = Settings.query.filter_by(key_name='prompt_template').first()
+
 
     if not prompt_template:
         return jsonify({"error": "Prompt template not found"}), 500
