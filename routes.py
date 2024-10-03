@@ -182,10 +182,25 @@ def protected_task():
 
     # Set up the generative model
     model = genai.GenerativeModel("gemini-1.5-flash")
+    robot_message = ""
 
-    # Generate a message directly using the prompt
-    response = model.generate_content(final_prompt)
-    robot_message = response.text
+    try:
+        # Generate a message directly using the prompt
+        response = model.generate_content(final_prompt)
+        robot_message = response.text
+    except Exception as e:
+        # Fetch all RoboChatters that are currently enabled
+        robochatters = RoboChatter.query.filter_by(enabled=True).all()
+
+        # Set enabled=False for each RoboChatter
+        for robochatter in robochatters:
+            robochatter.enabled = False
+
+        # Commit the changes to the database
+        db.session.commit()
+        socketio.emit('broadcast_message', {'message': "Radchat: The robots are sleeping now, but they will be back tomorrow after their quota resets.  Sorry.  It's a union thing...", 'event': "refresh_robots"})
+        
+        return jsonify({"error": f"Error generating message: OVER QUOTA!"}), 500
 
     # Broadcast the new message using WebSocket
     socketio.emit('broadcast_message', {'message': robot_message})
