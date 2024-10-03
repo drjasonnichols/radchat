@@ -7,6 +7,8 @@ from extensions import db, socketio  # Import db from the newly created extensio
 import jwt
 from model import User, RoboChatter, ChatHistory, Settings  # Import the User and RoboChatter models
 import google.generativeai as genai
+from flask import copy_current_request_context
+import threading
 
 # Define a blueprint for routing (modularizes the app's routes)
 routes_blueprint = Blueprint('routes', __name__)
@@ -105,18 +107,23 @@ def get_all_robochatters():
 # Route to toggle the enabled status of a specific RoboChatter by ID
 @routes_blueprint.route('/robochatter/toggle/<int:robochatter_id>', methods=['POST'])
 def toggle_robochatter(robochatter_id):
-    user, error_response = validate_token(request)  # Validate the user's token
+    user, error_response = validate_token(request)
     if error_response:
-        return error_response  # Return error if the token validation fails
+        return error_response
 
-    # Fetch the RoboChatter by ID, return 404 if not found
     robochatter = RoboChatter.query.get_or_404(robochatter_id)
     newstate = not robochatter.enabled
-    robochatter.enabled = not robochatter.enabled  # Toggle the enabled status
-    db.session.commit()  # Commit the change to the database
-    protected_task()  # Call the protected_task function to generate a new robomessage
-    return jsonify({"id": robochatter.id, "name": robochatter.name, "enabled": robochatter.enabled}), 200  # Return updated status
+    robochatter.enabled = newstate
+    db.session.commit()
 
+    @copy_current_request_context
+    def async_protected_task():
+        protected_task()
+
+    task_thread = threading.Thread(target=async_protected_task)
+    task_thread.start()
+
+    return jsonify({"id": robochatter.id, "name": robochatter.name, "enabled": robochatter.enabled}), 200
 
 #private route for making the robots talk
 # New route that is only accessible via the correct API key
