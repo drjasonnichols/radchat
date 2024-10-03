@@ -47,7 +47,7 @@ body {
 
 .chat-message {
     /* Individual chat message styling */
-    padding: 5px;
+    padding-bottom: 20px;
     border-top: 1px solid #00ffcc;
     padding-top: 20px;
     font-size: 12px;
@@ -58,9 +58,9 @@ body {
     /* Distinct neon blue color for messages from the RoboChatter */
     color: #00FFFF;
     font-size: 12px;
-    padding: 5px;
+    padding-bottom: 20px;
     border-top: 1px solid #00ffcc;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 /* Chatters Area */
