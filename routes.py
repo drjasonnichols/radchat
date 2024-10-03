@@ -111,8 +111,10 @@ def toggle_robochatter(robochatter_id):
 
     # Fetch the RoboChatter by ID, return 404 if not found
     robochatter = RoboChatter.query.get_or_404(robochatter_id)
+    newstate = not robochatter.enabled
     robochatter.enabled = not robochatter.enabled  # Toggle the enabled status
     db.session.commit()  # Commit the change to the database
+    protected_task()  # Call the protected_task function to generate a new robomessage
     return jsonify({"id": robochatter.id, "name": robochatter.name, "enabled": robochatter.enabled}), 200  # Return updated status
 
 
