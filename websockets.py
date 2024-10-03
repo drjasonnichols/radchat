@@ -39,7 +39,7 @@ def register_websocket_handlers(socketio):
                     'user_count': f"{count_connected_clients()}"
                 }, broadcast=True)
                 
-                if(count_connected_clients()==1):
+                if(count_connected_clients()<1):
                 # Enable all RoboChatters
                     robochatters = RoboChatter.query.all()  # Fetch all RoboChatters from the database
                     for robochatter in robochatters:
