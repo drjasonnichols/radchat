@@ -120,6 +120,12 @@ def toggle_robochatter(robochatter_id):
 # New route that is only accessible via the correct API key
 @routes_blueprint.route('/protected_task', methods=['POST'])
 def protected_task():
+    # Check if anyone is connected to the WebSocket
+    clients = socketio.server.manager.get_participants('/', '/')
+    if not clients:
+        print("No one is connected to the WebSocket. Stopping execution.")
+        return jsonify({"error": "No clients connected"}), 400
+    
     # Retrieve the API key from app config
     gemini_api_key = current_app.config['GEMINI_API_KEY']
 
@@ -151,6 +157,7 @@ def protected_task():
     # Reverse the remaining chat history to make it chronological (oldest to newest)
     # Use "---" as a delimiter between messages
     conversation_history = "\n---\n".join([message.message for message in reversed(remaining_chat_history)])
+    
     # Retrieve the prompt template from the 'Settings' table
     prompt_template = Settings.query.filter_by(key_name='prompt_template').first()
 
