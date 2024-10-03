@@ -120,12 +120,17 @@ def toggle_robochatter(robochatter_id):
 # New route that is only accessible via the correct API key
 @routes_blueprint.route('/protected_task', methods=['POST'])
 def protected_task():
-    # Check if anyone is connected to the WebSocket
-    clients = socketio.server.manager.get_participants('/', '/')
-    if not clients:
-        print("No one is connected to the WebSocket. Stopping execution.")
-        return jsonify({"error": "No clients connected"}), 400
+    # Access the current app's SocketIO instance to count connected clients
+    socketio = current_app.extensions['socketio']  # Retrieve the socketio instance
+    connected_clients = socketio.server.eio.sockets  # Get all connected clients
+    clients = len(connected_clients)  # Count the connected clients
     
+    if clients == 0:
+        print("No clients are connected to the WebSocket. Stopping execution.")
+        return jsonify({"error": "No clients connected"}), 400
+
+    print(f"Total connected clients: {clients}")  # Log the total number of clients
+
     # Retrieve the API key from app config
     gemini_api_key = current_app.config['GEMINI_API_KEY']
 
