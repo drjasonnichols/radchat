@@ -237,7 +237,7 @@ def protected_task():
 
         # Commit the changes to the database
         db.session.commit()
-        socketio.emit('broadcast_message', {'message': "Radchat: The robots are sleeping now, but they will be back tomorrow after their quota resets.\n\nSorry.  It's a union thing...", 'event': "refresh_robots"})
+        socketio.emit('broadcast_message', {'message': "Radchat: The robots are sleeping now, but they will be back a little later after their quota resets.\n\nSorry.  It's a union thing...", 'event': "refresh_robots"})
         
         return jsonify({"error": f"Error generating message: OVER QUOTA!"}), 500
 
