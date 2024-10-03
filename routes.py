@@ -180,7 +180,21 @@ def protected_task():
     if not prompt_template:
         return jsonify({"error": "Prompt template not found"}), 500
 
-    # Select a random RoboChatter from the enabled list
+    # Retrieve the 'last_robo' value from the Settings table
+    last_robo_setting = Settings.query.filter_by(key_name='last_robot_chatter').first()
+
+    # Ensure that the setting exists and has a valid value
+    if last_robo_setting and last_robo_setting.value:
+        last_robo = last_robo_setting.value
+        
+        # Check if the 'last_robo' exists in the 'robochatters' list
+        robochatter_to_remove = next((robo for robo in robochatters if robo.name == last_robo), None)
+        
+        # If 'last_robo' is found and there are other robots in 'robochatters', remove it
+        if robochatter_to_remove and len(robochatters) > 1:
+            robochatters.remove(robochatter_to_remove)
+
+    # After removal, you can proceed to select a random RoboChatter
     selected_robochatter = random.choice(robochatters)
 
     # Construct the final prompt by replacing placeholders in the template
