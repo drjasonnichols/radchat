@@ -1,6 +1,8 @@
 import time
 import requests
 import logging
+import random
+
 
 # Set up logging to output to the console with a detailed format
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -30,5 +32,16 @@ if __name__ == "__main__":
     logging.info("Worker started.")
     while True:
         call_protected_task()
-        logging.info("Sleeping for 10 seconds before the next call.")
-        time.sleep(60)  # Sleep for 10 seconds
+        # Set the mean and standard deviation
+        mean_sleep_time = 30  # Mean of 30 seconds
+        std_dev_sleep_time = 5  # Standard deviation (you can adjust this)
+
+        # Generate a sleep time from a normal distribution
+        sleep_time = random.normalvariate(mean_sleep_time, std_dev_sleep_time)
+
+        # Ensure that the sleep time is positive (normal distribution could generate negatives)
+        sleep_time = max(0, sleep_time)
+        logging.info(f"Sleeping for {sleep_time:.2f} seconds before the next call.")
+
+        # Sleep for the generated time
+        time.sleep(sleep_time)
