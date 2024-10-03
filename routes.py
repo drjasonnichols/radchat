@@ -9,6 +9,7 @@ from model import User, RoboChatter, ChatHistory, Settings  # Import the User an
 import google.generativeai as genai
 from flask import copy_current_request_context
 import threading
+import time
 
 # Define a blueprint for routing (modularizes the app's routes)
 routes_blueprint = Blueprint('routes', __name__)
@@ -118,6 +119,7 @@ def toggle_robochatter(robochatter_id):
 
     @copy_current_request_context
     def async_protected_task():
+        time.sleep(1)
         protected_task()
 
     task_thread = threading.Thread(target=async_protected_task)
