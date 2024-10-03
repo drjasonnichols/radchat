@@ -38,6 +38,16 @@ const ChatSocket = {
             this.currentRetries = 0;  // Reset retry counter after a successful connection
         });
 
+        this.socket.on('system_message', (data) => {
+            console.log("Received system message:", data);
+            if (data.event === 'refresh_robots') {
+                if (this.refreshRobotsCallback) {
+                    this.refreshRobotsCallback();  // Trigger the robot refresh callback
+                }
+            }
+
+        });
+        
         /**
          * Listens for incoming messages via 'broadcast_message' event.
          * Updates the list of users, handles robot events, and triggers message or user list refresh callbacks.

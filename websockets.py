@@ -2,7 +2,7 @@ from flask_socketio import emit, disconnect
 from flask import request
 from flask_jwt_extended import decode_token
 from extensions import db, socketio  # Import socketio and db from extensions.py
-from model import User, ChatHistory  # Import the User model here after db is initialized
+from model import User, ChatHistory, RoboChatter  # Import the User model here after db is initialized
 
 # Function to register WebSocket event handlers for real-time communication
 def register_websocket_handlers(socketio):
@@ -27,10 +27,26 @@ def register_websocket_handlers(socketio):
 
             if user:
                 print(f"Token successfully decoded: {decoded_token}")  # Log successful token decoding
+                
                 # Emit a success message to the connected client
                 emit('connect_success', {'message': f'Client connected with token: {decoded_token}'})
+                
                 # Broadcast a message that the user has entered the chat to all clients
-                emit('broadcast_message', {'message': f"{user.name} has entered the chat...", 'user': f"{user.name}", 'event': "new_chatter", 'user_count': f"{count_connected_clients()}"}, broadcast=True)
+                emit('broadcast_message', {
+                    'message': f"{user.name} has entered the chat...",
+                    'user': f"{user.name}",
+                    'event': "new_chatter",
+                    'user_count': f"{count_connected_clients()}"
+                }, broadcast=True)
+                
+                if(count_connected_clients()==1):
+                # Enable all RoboChatters
+                    robochatters = RoboChatter.query.all()  # Fetch all RoboChatters from the database
+                    for robochatter in robochatters:
+                        robochatter.enabled = True  # Set enabled to True for all RoboChatters
+                    db.session.commit()  # Commit changes to the database
+                    emit('system_message', {'event': "refresh_robots"}, broadcast=True)  # Broadcast a message to refresh the robots
+
             else:
                 emit('broadcast_message', {'error': 'User not found'}, broadcast=False)
 
