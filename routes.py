@@ -195,7 +195,21 @@ def protected_task():
             robochatters.remove(robochatter_to_remove)
 
     # After removal, you can proceed to select a random RoboChatter
+    # Select a random RoboChatter
     selected_robochatter = random.choice(robochatters)
+
+    # Fetch the 'last_robot_chatter' setting from the Settings table
+    last_robo_setting = Settings.query.filter_by(key_name='last_robot_chatter').first()
+
+    # If the setting exists, update its value; otherwise, create a new setting
+    if last_robo_setting:
+        last_robo_setting.value = selected_robochatter.name  # Update the value to the selected RoboChatter's name
+    else:
+        last_robo_setting = Settings(key_name='last_robot_chatter', value=selected_robochatter.name)
+        db.session.add(last_robo_setting)
+
+    # Commit the changes to the database
+    db.session.commit()
 
     # Construct the final prompt by replacing placeholders in the template
     final_prompt = prompt_template.value.format(
