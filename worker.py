@@ -31,4 +31,4 @@ if __name__ == "__main__":
     while True:
         call_protected_task()
         logging.info("Sleeping for 10 seconds before the next call.")
-        time.sleep(20)  # Sleep for 10 seconds
+        time.sleep(60)  # Sleep for 10 seconds
