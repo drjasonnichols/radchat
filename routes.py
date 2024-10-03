@@ -136,15 +136,23 @@ def protected_task():
         return jsonify({"error": "History count setting not found"}), 500
     
     history_count = int(history_count.value)
-    # Fetch the 100 most recent messages, ordered by most recent
+    
+    # Fetch the most recent messages, ordered by most recent
     chat_history = ChatHistory.query.order_by(ChatHistory.id.desc()).limit(history_count).all()
 
-    # Generate a single string for the conversation history, each message on a new line
-    conversation_history = "\n".join([message.message for message in chat_history])
+    # Ensure there is at least one message in the history
+    if not chat_history:
+        return jsonify({"error": "Chat history is empty"}), 400
 
+    # Separate the newest message (first in the list) from the rest
+    first_post = chat_history[0].message  # The newest message (first in the descending order list)
+    remaining_chat_history = chat_history[1:]  # All other messages excluding the newest one
+
+    # Reverse the remaining chat history to make it chronological (oldest to newest)
+    # Use "---" as a delimiter between messages
+    conversation_history = "\n---\n".join([message.message for message in reversed(remaining_chat_history)])
     # Retrieve the prompt template from the 'Settings' table
     prompt_template = Settings.query.filter_by(key_name='prompt_template').first()
-
 
     if not prompt_template:
         return jsonify({"error": "Prompt template not found"}), 500
@@ -156,7 +164,8 @@ def protected_task():
     final_prompt = prompt_template.value.format(
         robochatter_name=selected_robochatter.name,
         robochatter_description=selected_robochatter.description,
-        conversation_history=conversation_history
+        conversation_history=conversation_history,  # The reversed chronological order history
+        first_post=first_post  # Pass the newest message as first_post
     )
 
     # Set up the generative model
