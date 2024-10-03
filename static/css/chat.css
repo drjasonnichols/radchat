@@ -48,14 +48,19 @@ body {
 .chat-message {
     /* Individual chat message styling */
     padding: 5px;
-    border-bottom: 1px solid #00ffcc;
-    margin-bottom: 5px;
+    border-top: 1px solid #00ffcc;
+    padding-top: 10px;
+    font-size: 12px;
 }
 
 /* RoboChatter Message */
 .robo-message {
     /* Distinct neon blue color for messages from the RoboChatter */
     color: #00FFFF;
+    font-size: 12px;
+    padding: 5px;
+    border-top: 1px solid #00ffcc;
+    padding-top: 10px;
 }
 
 /* Chatters Area */
@@ -112,7 +117,7 @@ body {
     word-wrap: break-word; /* Proper word wrapping */
     resize: none; /* Prevent resizing */
     flex-grow: 1; /* Fill available width */
-    font-size: 16px;;
+    font-size: 12px;;
 }
 
 /* Input Focus State */
