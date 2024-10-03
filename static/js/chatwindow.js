@@ -98,7 +98,7 @@ function showNewChat(messageData) {
     const chatWindow = document.getElementById('chatWindow');
     const newMessage = document.createElement('div');
     newMessage.classList.add('chat-message');
-    newMessage.classList.add('glow-border');
+    newMessage.classList.add('highlight-background');
     newMessage.innerText = messageData.message;  // Set the text of the new message
 
     const scrollBuffer = 100;  // Small buffer to account for minor scroll height inconsistencies
