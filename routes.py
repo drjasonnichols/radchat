@@ -113,14 +113,16 @@ def toggle_robochatter(robochatter_id):
         return error_response
 
     robochatter = RoboChatter.query.get_or_404(robochatter_id)
+    any_enabled_robochatter = db.session.query(RoboChatter).filter_by(enabled=True).first() is not None
     newstate = not robochatter.enabled
     robochatter.enabled = newstate
     db.session.commit()
-
-    @copy_current_request_context
-    def async_protected_task():
-        time.sleep(1)
-        protected_task()
+    
+    if not any_enabled_robochatter:
+        @copy_current_request_context
+        def async_protected_task():
+            time.sleep(1)
+            protected_task()
 
     task_thread = threading.Thread(target=async_protected_task)
     task_thread.start()
