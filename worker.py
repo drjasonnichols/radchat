@@ -40,7 +40,8 @@ if __name__ == "__main__":
         sleep_time = random.normalvariate(mean_sleep_time, std_dev_sleep_time)
 
         # Ensure that the sleep time is positive (normal distribution could generate negatives)
-        sleep_time = max(0, sleep_time)
+        #sleep_time = max(0, sleep_time)
+        sleep_time=31
         logging.info(f"Sleeping for {sleep_time:.2f} seconds before the next call.")
 
         # Sleep for the generated time
