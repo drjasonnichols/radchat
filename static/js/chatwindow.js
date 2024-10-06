@@ -98,10 +98,10 @@ function showNewChat(messageData) {
     const chatWindow = document.getElementById('chatWindow');
     const newMessage = document.createElement('div');
     newMessage.classList.add('chat-message');
-    newMessage.classList.add('highlight-background');
 
     // Check if the message contains a colon to differentiate system messages
     if (messageData.message.includes(':')) {
+        newMessage.classList.add('highlight-background');
         // Split the message into the name part and the actual message
         const [namePart, messagePart] = messageData.message.split(/:(.+)/); // Split on the first colon
 

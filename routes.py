@@ -264,7 +264,7 @@ def protected_task():
 
         # Send a broadcast message indicating robots are now sleeping
         socketio.emit('broadcast_message', {
-            'message': "Radchat: The robots are sleeping now, but you can re-enable them and wake them back up a little later, after their quota resets.\n\nSorry.  It's a union thing...", 
+            'message': "The robots are sleeping now.  You can wake them back up after their quota resets.\n\nSorry.  It's a union thing...", 
             'event': "refresh_robots"
         })
 
