@@ -106,6 +106,29 @@ def register_websocket_handlers(socketio):
             # Handle errors during token decoding and emit an error message
             emit('broadcast_message', {'error': f'Invalid token: {str(e)}'}, broadcast=False)
 
+    @socketio.on('typing_event')
+    def handle_typing_event(data):
+        token = request.args.get('token')  # Get the JWT token from the request
+
+        if not token:
+            print("No token provided for typing event.")
+            return
+
+        try:
+            # Decode the JWT token to verify user identity
+            decoded_token = decode_token(token)
+            user = User.query.filter_by(email=decoded_token['sub']).first()
+
+            if user:
+                # Broadcast the typing event to all other clients
+                emit('typing_event', {'type': 'user', 'user': user.name, 'duration': 3}, broadcast=True)  # Set duration to 3 seconds
+            else:
+                print("User not found during typing event.")
+
+        except Exception as e:
+            print(f"Error handling typing event: {str(e)}")
+
+
     # Handle the event when a client disconnects from the WebSocket
     @socketio.on('disconnect')
     def handle_disconnect():

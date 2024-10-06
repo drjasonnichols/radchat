@@ -119,6 +119,21 @@ def toggle_robochatter(robochatter_id):
     db.session.commit()
     return jsonify({"id": robochatter.id, "name": robochatter.name, "enabled": robochatter.enabled}), 200
 
+#private route for sending a robot typing notification
+# New route that is only accessible via the correct API key
+@routes_blueprint.route('/protected_notify', methods=['POST'])
+def protected_notify():
+    socketio = current_app.extensions['socketio']  # Retrieve the socketio instance
+    
+    # Get the 'duration' from the request data, defaulting to 3 seconds if not provided
+    data = request.get_json()  # Assuming you're sending JSON data in the POST request
+    duration = data.get('duration', 15)  # Default duration is 3 seconds
+    
+    # Emit the typing event with 'robot' type and the provided or default duration
+    socketio.emit('typing_event', {'type': 'robot', 'duration': duration}, broadcast=True)
+    
+    return jsonify({'status': 'success', 'message': f'Typing event emitted for robot with duration {duration} seconds'}), 200
+
 #private route for making the robots talk
 # New route that is only accessible via the correct API key
 @routes_blueprint.route('/protected_task', methods=['POST'])

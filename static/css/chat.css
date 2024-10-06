@@ -46,6 +46,18 @@ body {
     animation: highlight 2s ease-out;  /* Highlight effect over 2 seconds */
 }
 
+.typingIndicator {
+    /* Typing indicator styling */
+    color: #ff00ff;
+    font-size: 10px; /* Small font size */
+    height: 14px;
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: #1a1a1a;
+    border-radius: 10px; /* Rounded corners */
+}
+
 .chat-window {
     /* Neon border and glow for the chat window */
     border: 3px solid #00ffcc;

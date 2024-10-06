@@ -207,6 +207,22 @@ function keyboardOut(){
 
 }
 
+// This function will be called whenever the typing indicator needs to be updated
+function updateTypingIndicator(userTyping, robotTyping) {
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    if (userTyping && robotTyping) {
+        typingIndicator.innerText = "A RadChatter and a RoboChatter are typing...";
+    } else if (userTyping) {
+        typingIndicator.innerText = "A RadChatter is typing...";
+    } else if (robotTyping) {
+        typingIndicator.innerText = "A RoboChatter is typing...";
+    } else {
+        typingIndicator.innerText = ""; // Clear the text if no one is typing
+    }
+}
+
+
 // Set up the ChatSocket connection and event listeners when the document loads
 // Initializes the WebSocket connection and sets event listeners for sending messages, logging off, and rendering RoboChatters.
 window.addEventListener('load', () => {
@@ -304,6 +320,9 @@ window.addEventListener('load', () => {
     ChatSocket.setMessageCallback(showNewChat);
     ChatSocket.setRefreshChattersCallback(refreshChatters);
     ChatSocket.setRefreshRobotsCallback(renderRoboChatters);
+    // Set this function as the typing indicator callback in ChatSocket
+    ChatSocket.setTypingIndicatorCallback(updateTypingIndicator);
+
 
     // Set up event listener for sending messages when the send button is clicked
     document.getElementById('sendMessage').addEventListener('click', () => {
@@ -377,6 +396,20 @@ window.addEventListener('load', () => {
 
     document.getElementById('logOffButtonOffCanvas').addEventListener('click', () => {
         logOffUser();  // Log off the user from the offcanvas button
+    });
+
+    let lastTypingTime = 0;
+    const THROTTLE_TIME = 2000;  // Minimum time between typing events (2 seconds)
+
+    // Listener for the 'input' event on the message input field
+    document.getElementById('messageInput').addEventListener('input', () => {
+        const currentTime = Date.now();
+
+        // Check if enough time has passed since the last typing event
+        if (currentTime - lastTypingTime > THROTTLE_TIME) {
+            ChatSocket.emitTypingEvent();  // Emit typing event
+            lastTypingTime = currentTime;  // Update last typing time
+        }
     });
 
     // Render the RoboChatters on page load
