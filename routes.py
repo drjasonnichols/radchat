@@ -226,9 +226,20 @@ def protected_task():
     robot_message = ""
 
     try:
-        # Generate a message directly using the prompt
-        response = model.generate_content(final_prompt)
-        robot_message = response.text
+        # Try up to three times with 1-second intervals if it fails
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                # Generate a message directly using the prompt
+                response = model.generate_content(final_prompt)
+                robot_message = response.text
+                break  # Exit the loop if successful
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    time.sleep(1)  # Wait for 1 second before retrying
+                else:
+                    raise  # Re-raise the exception if it's the last attempt
+
     except Exception as e:
         # Fetch all RoboChatters that are currently enabled
         robochatters = RoboChatter.query.filter_by(enabled=True).all()
@@ -239,8 +250,14 @@ def protected_task():
 
         # Commit the changes to the database
         db.session.commit()
-        socketio.emit('broadcast_message', {'message': "Radchat: The robots are sleeping now, but they will be back a little later after their quota resets.\n\nSorry.  It's a union thing...", 'event': "refresh_robots"})
-        
+
+        # Send a broadcast message indicating robots are now sleeping
+        socketio.emit('broadcast_message', {
+            'message': "Radchat: The robots are sleeping now, but you can re-enable them and wake them back up a little later, after their quota resets.\n\nSorry.  It's a union thing...", 
+            'event': "refresh_robots"
+        })
+
+        # Return a 500 error with the relevant message
         return jsonify({"error": f"Error generating message: OVER QUOTA!"}), 500
 
     # Broadcast the new message using WebSocket
