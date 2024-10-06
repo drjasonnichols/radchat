@@ -134,6 +134,7 @@ function showNewChat(messageData) {
         // Create a div for the actual message content
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('highlight-background');
+        messageDiv.classList.add('message-text');
         messageDiv.textContent = messagePart;  // The actual message content
 
         // Append the nameDiv and messageDiv to the newMessageContainer

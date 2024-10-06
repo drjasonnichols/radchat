@@ -118,6 +118,10 @@ body {
     color: #FFFF33;
 }
 
+.message-text{
+    font-size: 11px;
+}
+
 .messageTimestamp{
     color: #6e6e6e;
     font-size: 8px;
