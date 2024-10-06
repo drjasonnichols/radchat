@@ -44,22 +44,29 @@ const ChatSocket = {
             if (this.messageCallback) {
                 this.messageCallback(data);
             }
-
+        
             if (data.event === 'new_chatter') {
                 this.users.unshift(data.user);
                 this.userCount = parseInt(data.user_count);
-                this.refreshChattersCallback(this.users, this.userCount-1);
+                this.refreshChattersCallback(this.users, this.userCount-this.users.length);
             } else if (data.event === 'remove_chatter') {
                 const index = this.users.indexOf(data.user);
                 if (index !== -1) {
                     this.users.splice(index, 1);
-                    this.userCount = parseInt(data.user_count) - 1;
-                    this.refreshChattersCallback(this.users, this.userCount-1);
+                    this.userCount = parseInt(data.user_count);
+                    this.refreshChattersCallback(this.users, this.userCount-this.users.length);
                 }
             } else if (data.event === 'refresh_robots') {
                 if (this.refreshRobotsCallback) {
                     this.refreshRobotsCallback();
                 }
+            } else if (data.user && data.user_count) {
+                // Check if the user is already in the users list
+                if (!this.users.includes(data.user)) {
+                    this.users.unshift(data.user); // Add the user to the front of the list
+                }
+                this.userCount = parseInt(data.user_count); // Update the user count
+                this.refreshChattersCallback(this.users, this.userCount-this.users.length); // Call the refresh callback
             }
         });
 
