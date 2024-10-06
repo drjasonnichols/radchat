@@ -136,7 +136,7 @@ def protected_notify():
     duration = data.get('duration', 15)  # Default duration is 15 seconds
     
     # Emit the typing event with 'robot' type and the provided or default duration
-    socketio.emit('typing_event', {'type': 'robot', 'duration': duration}, broadcast=True)
+    socketio.emit('typing_event', {'type': 'robot', 'duration': duration})
     
     return jsonify({'status': 'success', 'message': f'Typing event emitted for robot with duration {duration} seconds'}), 200
 
