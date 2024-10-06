@@ -125,12 +125,18 @@ def toggle_robochatter(robochatter_id):
 def protected_notify():
     socketio = current_app.extensions['socketio']  # Retrieve the socketio instance
     
+    # Check if any RoboChatter is enabled
+    any_enabled_robochatter = db.session.query(RoboChatter).filter_by(enabled=True).first() is not None
+    
+    if not any_enabled_robochatter:
+        return jsonify({'status': 'error', 'message': 'No active RoboChatters available to send typing event.'}), 400
+
     # Get the 'duration' from the request data, defaulting to 3 seconds if not provided
     data = request.get_json()  # Assuming you're sending JSON data in the POST request
-    duration = data.get('duration', 15)  # Default duration is 3 seconds
+    duration = data.get('duration', 15)  # Default duration is 15 seconds
     
     # Emit the typing event with 'robot' type and the provided or default duration
-    socketio.emit('typing_event', {'type': 'robot', 'duration': duration})
+    socketio.emit('typing_event', {'type': 'robot', 'duration': duration}, broadcast=True)
     
     return jsonify({'status': 'success', 'message': f'Typing event emitted for robot with duration {duration} seconds'}), 200
 

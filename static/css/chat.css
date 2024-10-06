@@ -99,6 +99,7 @@ body {
     padding: 10px; /* Space inside the containers */
     margin-bottom: 10px;
     border-radius: 10px; /* Rounded corners */
+    min-height: 20vh; /* Minimum height */
 }
 
 .robo-chatters {

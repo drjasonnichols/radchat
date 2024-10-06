@@ -48,11 +48,13 @@ const ChatSocket = {
             if (data.event === 'new_chatter') {
                 this.users.unshift(data.user);
                 this.userCount = parseInt(data.user_count);
+                this.refreshChattersCallback(this.users, this.userCount-1);
             } else if (data.event === 'remove_chatter') {
                 const index = this.users.indexOf(data.user);
                 if (index !== -1) {
                     this.users.splice(index, 1);
                     this.userCount = parseInt(data.user_count) - 1;
+                    this.refreshChattersCallback(this.users, this.userCount-1);
                 }
             } else if (data.event === 'refresh_robots') {
                 if (this.refreshRobotsCallback) {
