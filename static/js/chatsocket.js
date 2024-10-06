@@ -66,7 +66,7 @@ const ChatSocket = {
             if (data.type === 'user') {
                 this.handleUserTyping(data.duration);
             } else if (data.type === 'robot') {
-                this.handleRobotTyping();
+                this.handleRobotTyping(data.duration);
             }
         });
 
@@ -103,7 +103,7 @@ const ChatSocket = {
     },
 
     // Handle robot typing
-    handleRobotTyping: function () {
+    handleRobotTyping: function (duration) {
         clearTimeout(this.robotTypingTimeout);
         this.robotTyping = true;
         this.triggerTypingIndicatorCallback();
@@ -111,7 +111,7 @@ const ChatSocket = {
         this.robotTypingTimeout = setTimeout(() => {
             this.robotTyping = false;
             this.triggerTypingIndicatorCallback();
-        }, 3000); // You can adjust this duration as needed
+        }, duration * 1000); // You can adjust this duration as needed
     },
 
     // Trigger the typing indicator callback based on the typing flags
