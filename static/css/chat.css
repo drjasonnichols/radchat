@@ -110,7 +110,11 @@ body {
     color: #00FFFF
 }
 
-.chatterAndRobotIndicator .systemMessage{
+.chatterAndRobotIndicator{
+    color: #FFFF33
+}
+
+.systemMessage{
     color: #FFFF33
 }
 
