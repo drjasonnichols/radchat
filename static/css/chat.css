@@ -73,7 +73,7 @@ body {
 .chat-message {
     /* Individual chat message styling */
     padding-bottom: 20px;
-    border-top: 1px solid #00ffcc;
+    /*border-top: 1px solid #4a4a4a;*/
     padding-top: 20px;
     font-size: 12px;
 }
@@ -107,15 +107,20 @@ body {
 }
 
 .robotIndicator{
-    color: #00FFFF
+    color: #00FFFF;
 }
 
 .chatterAndRobotIndicator{
-    color: #FFFF33
+    color: #FFFF33;
 }
 
 .systemMessage{
-    color: #FFFF33
+    color: #FFFF33;
+}
+
+.messageTimestamp{
+    color: #6e6e6e;
+    font-size: 8px;
 }
 
 .robo-chatters {

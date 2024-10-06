@@ -96,44 +96,62 @@ async function toggleRobo(roboID) {
 // Appends the new message to the chat window and auto-scrolls if the user is already at the bottom.
 function showNewChat(messageData) {
     const chatWindow = document.getElementById('chatWindow');
-    const newMessage = document.createElement('div');
-    newMessage.classList.add('chat-message');
+    const newMessageContainer = document.createElement('div');
+    newMessageContainer.classList.add('chat-message');
 
     // Check if the message contains a colon to differentiate system messages
     if (messageData.message.includes(':')) {
-        newMessage.classList.add('highlight-background');
-        // Split the message into the name part and the actual message
         const [namePart, messagePart] = messageData.message.split(/:(.+)/); // Split on the first colon
 
-        // Create span for the name part and apply the appropriate class
+        // Create a div for the name part and timestamp
+        const nameDiv = document.createElement('div');
         const nameSpan = document.createElement('span');
-        nameSpan.textContent = namePart + ": "; // Add colon after name
+        const timestampSpan = document.createElement('span');
 
+        // Apply CSS classes
         if (messageData.user) {
-            nameSpan.classList.add('chatterIndicator');  // Apply 'chatterIndicator' if it's a user message
+            nameSpan.classList.add('chatterIndicator');
         } else if (messageData.robot) {
-            nameSpan.classList.add('robotIndicator');  // Apply 'robotIndicator' if it's a robot message
+            nameSpan.classList.add('robotIndicator');
         }
 
-        // Create span for the message part (after the colon)
-        const messageSpan = document.createElement('span');
-        messageSpan.textContent = messagePart;  // The actual message
+        nameSpan.textContent = namePart;  // The name part of the message
 
-        // Append both spans to the new message div
-        newMessage.appendChild(nameSpan);
-        newMessage.appendChild(messageSpan);
+        // Generate the current timestamp (HH:MM AM/PM)
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;  // If hour is 0, set it to 12
+        timestampSpan.textContent = ` ${hours}:${minutes} ${ampm}`;
+        timestampSpan.classList.add('messageTimestamp');
+
+        // Append name and timestamp to the nameDiv
+        nameDiv.appendChild(nameSpan);
+        nameDiv.appendChild(timestampSpan);
+
+        // Create a div for the actual message content
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('highlight-background');
+        messageDiv.textContent = messagePart;  // The actual message content
+
+        // Append the nameDiv and messageDiv to the newMessageContainer
+        newMessageContainer.appendChild(nameDiv);
+        newMessageContainer.appendChild(messageDiv);
+
     } else {
-        // No colon means it's a system message, apply systemMessage class to the entire message
-        newMessage.classList.add('systemMessage');  // Apply system message class
-        newMessage.textContent = messageData.message;  // Display the full message as-is
+        // No colon means it's a system message
+        newMessageContainer.classList.add('systemMessage');
+        newMessageContainer.textContent = messageData.message;  // Display the full message as-is
     }
 
     const scrollBuffer = 100;  // Small buffer to account for minor scroll height inconsistencies
     // Check if the user is scrolled to the bottom
     const isScrolledToBottom = (chatWindow.scrollTop + chatWindow.clientHeight) >= (chatWindow.scrollHeight - scrollBuffer);
 
-    // Append the message to the chat window
-    chatWindow.appendChild(newMessage);
+    // Append the new message to the chat window
+    chatWindow.appendChild(newMessageContainer);
 
     // If user is scrolled to the bottom, auto-scroll down
     if (isScrolledToBottom) {
