@@ -53,9 +53,9 @@ const ChatSocket = {
                 const index = this.users.indexOf(data.user);
                 if (index !== -1) {
                     this.users.splice(index, 1);
-                    this.userCount = parseInt(data.user_count);
-                    this.refreshChattersCallback(this.users, this.userCount-this.users.length);
                 }
+                this.userCount = parseInt(data.user_count)-1;
+                this.refreshChattersCallback(this.users, this.userCount-this.users.length);
             } else if (data.event === 'refresh_robots') {
                 if (this.refreshRobotsCallback) {
                     this.refreshRobotsCallback();
