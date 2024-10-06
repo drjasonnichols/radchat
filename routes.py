@@ -117,16 +117,6 @@ def toggle_robochatter(robochatter_id):
     newstate = not robochatter.enabled
     robochatter.enabled = newstate
     db.session.commit()
-    
-    if not any_enabled_robochatter:
-        @copy_current_request_context
-        def async_protected_task():
-            time.sleep(1)
-            protected_task()
-
-    task_thread = threading.Thread(target=async_protected_task)
-    task_thread.start()
-
     return jsonify({"id": robochatter.id, "name": robochatter.name, "enabled": robochatter.enabled}), 200
 
 #private route for making the robots talk
