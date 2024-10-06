@@ -272,7 +272,7 @@ def protected_task():
         return jsonify({"error": f"Error generating message: OVER QUOTA!"}), 500
 
     # Broadcast the new message using WebSocket
-    socketio.emit('broadcast_message', {'message': robot_message})
+    socketio.emit('broadcast_message', {'message': robot_message, 'robot': selected_robochatter.name})
 
     # Save the generated robot message to the chat history
     try:

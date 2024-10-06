@@ -99,12 +99,42 @@ function showNewChat(messageData) {
     const newMessage = document.createElement('div');
     newMessage.classList.add('chat-message');
     newMessage.classList.add('highlight-background');
-    newMessage.innerText = messageData.message;  // Set the text of the new message
+
+    // Check if the message contains a colon to differentiate system messages
+    if (messageData.message.includes(':')) {
+        // Split the message into the name part and the actual message
+        const [namePart, messagePart] = messageData.message.split(/:(.+)/); // Split on the first colon
+
+        // Create span for the name part and apply the appropriate class
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = namePart + ": "; // Add colon after name
+
+        if (messageData.user) {
+            nameSpan.classList.add('chatterIndicator');  // Apply 'chatterIndicator' if it's a user message
+        } else if (messageData.robot) {
+            nameSpan.classList.add('robotIndicator');  // Apply 'robotIndicator' if it's a robot message
+        }
+
+        // Create span for the message part (after the colon)
+        const messageSpan = document.createElement('span');
+        messageSpan.textContent = messagePart;  // The actual message
+
+        // Append both spans to the new message div
+        newMessage.appendChild(nameSpan);
+        newMessage.appendChild(messageSpan);
+    } else {
+        // No colon means it's a system message, apply systemMessage class to the entire message
+        newMessage.classList.add('systemMessage');  // Apply system message class
+        newMessage.textContent = messageData.message;  // Display the full message as-is
+    }
 
     const scrollBuffer = 100;  // Small buffer to account for minor scroll height inconsistencies
     // Check if the user is scrolled to the bottom
     const isScrolledToBottom = (chatWindow.scrollTop + chatWindow.clientHeight) >= (chatWindow.scrollHeight - scrollBuffer);
-    chatWindow.appendChild(newMessage);  // Append the message to the chat window
+
+    // Append the message to the chat window
+    chatWindow.appendChild(newMessage);
+
     // If user is scrolled to the bottom, auto-scroll down
     if (isScrolledToBottom) {
         scrollChatWindow();

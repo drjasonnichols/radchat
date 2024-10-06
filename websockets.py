@@ -95,7 +95,7 @@ def register_websocket_handlers(socketio):
                 # Check if the message is a robot action message (enabling/disabling a robot)
                 if isRobotActionMessage(message):
                     # Broadcast the robot action message to all clients
-                    emit('broadcast_message', {'message': f"{user.name}: {message}", 'user': f"{user.name}", 'user_count': f"{count_connected_clients()}", 'event': "refresh_robots"}, broadcast=True)
+                    emit('broadcast_message', {'message': f"{user.name} {message}", 'user': f"{user.name}", 'user_count': f"{count_connected_clients()}", 'event': "refresh_robots"}, broadcast=True)
                 else:
                     # Broadcast the regular chat message to all clients
                     emit('broadcast_message', {'message': f"{user.name}: {message}", 'user': f"{user.name}", 'user_count': f"{count_connected_clients()}"}, broadcast=True)
