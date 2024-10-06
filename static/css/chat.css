@@ -102,6 +102,18 @@ body {
     min-height: 20vh; /* Minimum height */
 }
 
+.chatterIndicator{
+    color: #ff00ff;
+}
+
+.robotIndicator{
+    color: #00FFFF
+}
+
+.chatterAndRobotIndicator{
+    color: #FFFF33
+}
+
 .robo-chatters {
     /* Neon blue border and glow effect for robo chatters */
     border-color: #00FFFF;

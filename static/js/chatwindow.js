@@ -208,18 +208,49 @@ function keyboardOut(){
 }
 
 // This function will be called whenever the typing indicator needs to be updated
+let typingInterval = null;  // To store the interval ID for cycling periods
+
 function updateTypingIndicator(userTyping, robotTyping) {
     const typingIndicator = document.getElementById('typingIndicator');
+    
+    // Clear previous classes
+    typingIndicator.classList.remove('chatterIndicator', 'robotIndicator', 'chatterAndRobotIndicator');
+
+    // Clear any existing interval if no one is typing
+    if (!userTyping && !robotTyping) {
+        typingIndicator.innerText = ""; // Clear the text if no one is typing
+        if (typingInterval) {
+            clearInterval(typingInterval);  // Stop the cycling periods
+            typingInterval = null;  // Reset the interval
+        }
+        return;
+    }
+
+    let baseText = ""; // This will hold the base text without periods
 
     if (userTyping && robotTyping) {
-        typingIndicator.innerText = "A RadChatter and a RoboChatter are typing...";
+        baseText = "A Chatter and a Robot are typing";
+        typingIndicator.classList.add('chatterAndRobotIndicator');
     } else if (userTyping) {
-        typingIndicator.innerText = "A RadChatter is typing...";
+        baseText = "A Chatter is typing";
+        typingIndicator.classList.add('chatterIndicator');
     } else if (robotTyping) {
-        typingIndicator.innerText = "A RoboChatter is typing...";
-    } else {
-        typingIndicator.innerText = ""; // Clear the text if no one is typing
+        baseText = "A Robot is typing";
+        typingIndicator.classList.add('robotIndicator');
     }
+
+    let periodCount = 0;  // Start with 0 periods
+
+    // If an interval is already running, clear it to avoid multiple intervals
+    if (typingInterval) {
+        clearInterval(typingInterval);
+    }
+
+    // Set up the interval to update the text every 500ms (0.5s)
+    typingInterval = setInterval(() => {
+        typingIndicator.innerText = `${baseText}${'.'.repeat(periodCount)}`;
+        periodCount = (periodCount + 1) % 4;  // Cycle between 0, 1, 2, and 3 periods
+    }, 500);  // Adjust the duration (500ms) as needed for faster/slower cycling
 }
 
 
